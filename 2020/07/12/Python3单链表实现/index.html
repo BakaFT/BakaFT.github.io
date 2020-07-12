@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    LeetCode-&#34;(26)删除排序数组中的重复项&#34; |  BakaFT&#39;s blog
+    Python3单链表实现 |  BakaFT&#39;s blog
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -39,7 +39,7 @@
   <div id="app">
     <main class="content on">
       <section class="outer">
-  <article id="post-26-删除排序数组中的重复项" class="article article-type-post" itemscope
+  <article id="post-Python3单链表实现" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -47,7 +47,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  LeetCode-&#34;(26)删除排序数组中的重复项&#34;
+  Python3单链表实现
 </h1>
  
 
@@ -56,8 +56,8 @@
 
     
     <div class="article-meta">
-      <a href="/2020/07/12/26-%E5%88%A0%E9%99%A4%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E9%A1%B9/" class="article-date">
-  <time datetime="2020-07-12T06:15:26.000Z" itemprop="datePublished">2020-07-12</time>
+      <a href="/2020/07/12/Python3%E5%8D%95%E9%93%BE%E8%A1%A8%E5%AE%9E%E7%8E%B0/" class="article-date">
+  <time datetime="2020-07-12T06:45:06.000Z" itemprop="datePublished">2020-07-12</time>
 </a>
       
   <div class="article-category">
@@ -71,7 +71,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">834</span>
+            <span class="post-count">496</span>
         </span>
     </span>
 
@@ -80,7 +80,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">3 min</span>
+            <span class="post-count">2 min</span>
         </span>
     </span>
 </div>
@@ -105,30 +105,15 @@
       
 
       
-      <h1 id="题前"><a href="#题前" class="headerlink" title="题前"></a>题前</h1><p>前几天去考科目三，两天之内真正练习的就两圈，然后考试过了。。其他时间实在是没意思，手机装了个力扣开始看题，用随身带的纸和笔写了几道题，不过没按照顺序，看了几个顺眼的写了写，在家de完了发一下。</p>
-<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给定一个排序数组，你需要在 <a href="https://baike.baidu.com/item/%E5%8E%9F%E5%9C%B0%E7%AE%97%E6%B3%95" target="_blank" rel="noopener">原地</a> 删除重复出现的元素，使得每个元素只出现一次，返回移除后数组的新长度。</p>
-<p>不要使用额外的数组空间，你必须在 <a href="https://baike.baidu.com/item/%E5%8E%9F%E5%9C%B0%E7%AE%97%E6%B3%95" target="_blank" rel="noopener">原地</a> 修改输入数组 并在使用 <strong>O(1) 额外空间</strong>的条件下完成。 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">示例 1:</span><br><span class="line"></span><br><span class="line">给定数组 nums &#x3D; [1,1,2], </span><br><span class="line"></span><br><span class="line">函数应该返回新的长度 2, 并且原数组 nums 的前两个元素被修改为 1, 2。 </span><br><span class="line"></span><br><span class="line">你不需要考虑数组中超出新长度后面的元素。</span><br><span class="line">示例 2:</span><br><span class="line"></span><br><span class="line">给定 nums &#x3D; [0,0,1,1,1,2,2,3,3,4],</span><br><span class="line"></span><br><span class="line">函数应该返回新的长度 5, 并且原数组 nums 的前五个元素被修改为 0, 1, 2, 3, 4。</span><br><span class="line">你不需要考虑数组中超出新长度后面的元素。</span><br></pre></td></tr></table></figure>
+      <h1 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h1><p>单链表是链表的一种，其特点是链表的链接方向是<code>单向</code>的，对链表的访问要通过顺序读取从<code>头部</code>开始</p>
+<p>链表是使用<code>指针</code>进行构造的列表，又称为结点列表，因为链表是由一个个<code>结点</code>组装起来的；其中每个结点都有指针成员变量指向列表中的<code>下一个</code>结点</p>
+<p>链表是由结点构成，头指针为空，终止于最后一个指向NULL的指针。</p>
+<h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><h2 id="结点类"><a href="#结点类" class="headerlink" title="结点类"></a>结点类</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Node</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, data)</span>:</span></span><br><span class="line">        self.data = data</span><br><span class="line">        self.next = <span class="literal">None</span></span><br></pre></td></tr></table></figure>
 
+<h2 id="单链表类"><a href="#单链表类" class="headerlink" title="单链表类"></a>单链表类</h2><p>下面会涉及到一个<code>cursor</code>的概念，有点像<code>Sqlite</code>里的游标,，表示目前选中的结点</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SingleLinkList</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, node=None)</span>:</span></span><br><span class="line">        self.__head = node </span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        链表头部添加元素</span></span><br><span class="line"><span class="string">        实例化一个Node对象并将指针指向上一个头结点</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        node = Node(item)</span><br><span class="line">        node.next = self.__head</span><br><span class="line">        self.__head = node</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">append</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        链表尾部添加元素</span></span><br><span class="line"><span class="string">        实例化一个Node对象,并判断，如果不为空则遍历到最后一个结点，使其指针指向新实例</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        node = Node(item)</span><br><span class="line">        <span class="comment"># 由于特殊情况当链表为空时没有next，所以在前面要做个判断</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            self.__head = node</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            cur = self.__head</span><br><span class="line">            <span class="keyword">while</span> cur.next != <span class="literal">None</span>:</span><br><span class="line">                cur = cur.next</span><br><span class="line">            cur.next = node</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">remove</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        <span class="string">'''删除节点'''</span></span><br><span class="line">        cur = self.__head</span><br><span class="line">        pre = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">while</span> cur != <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">if</span> cur.elem == item:</span><br><span class="line">                <span class="comment"># 先判断该节点是否是头结点</span></span><br><span class="line">                <span class="keyword">if</span> cur == self.__head:</span><br><span class="line">                    self.__head = cur.next</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    pre.next = cur.next</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                pre = cur</span><br><span class="line">                cur = cur.next</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">search</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        <span class="string">'''查找节点是否存在'''</span></span><br><span class="line">        cur = self.__head</span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">not</span> cur:</span><br><span class="line">            <span class="keyword">if</span> cur.elem == item:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                cur = cur.next</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_empty</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">'''链表是否为空'''</span></span><br><span class="line">        <span class="keyword">return</span> self.__head == <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">length</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">'''链表长度'''</span></span><br><span class="line">        <span class="comment"># cur游标，用来移动遍历节点</span></span><br><span class="line">        cur = self.__head</span><br><span class="line">        <span class="comment"># count记录数量</span></span><br><span class="line">        count = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> cur != <span class="literal">None</span>:</span><br><span class="line">            count += <span class="number">1</span></span><br><span class="line">            cur = cur.next</span><br><span class="line">        <span class="keyword">return</span> count</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">travel</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">'''遍历整个列表'''</span></span><br><span class="line">        cur = self.__head</span><br><span class="line">        <span class="keyword">while</span> cur != <span class="literal">None</span>:</span><br><span class="line">            print(cur.elem, end=<span class="string">' '</span>)</span><br><span class="line">            cur = cur.next</span><br><span class="line">        print(<span class="string">"\n"</span>)</span><br></pre></td></tr></table></figure>
 
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">说明:</span><br><span class="line"></span><br><span class="line">为什么返回数值是整数，但输出的答案是数组呢?</span><br><span class="line"></span><br><span class="line">请注意，输入数组是以「引用」方式传递的，这意味着在函数里修改输入数组对于调用者是可见的。</span><br><span class="line"></span><br><span class="line">你可以想象内部操作如下:</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; nums 是以“引用”方式传递的。也就是说，不对实参做任何拷贝</span><br><span class="line">int len &#x3D; removeDuplicates(nums);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 在函数里修改输入数组对于调用者是可见的。</span><br><span class="line">&#x2F;&#x2F; 根据你的函数返回的长度, 它会打印出数组中该长度范围内的所有元素。</span><br><span class="line">for (int i &#x3D; 0; i &lt; len; i++) &#123;</span><br><span class="line">    print(nums[i]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>链接：<a href="https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array" target="_blank" rel="noopener">https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array</a></p>
-<h1 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">removeDuplicates</span><span class="params">(self, nums)</span> -&gt; int:</span>   </span><br><span class="line">        temp = <span class="literal">None</span></span><br><span class="line">        offset = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums)):</span><br><span class="line">            i = i - offset</span><br><span class="line">            <span class="keyword">if</span> temp == <span class="literal">None</span>:</span><br><span class="line">                temp = nums[i]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">if</span> nums[i] == temp:</span><br><span class="line">                    nums.pop(i)</span><br><span class="line">                    offset = offset + <span class="number">1</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    temp = nums[i]</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">Accepted</span></span><br><span class="line"><span class="string">161/161 cases passed (52 ms)</span></span><br><span class="line"><span class="string">Your runtime beats 62.11 % of python3 submissions</span></span><br><span class="line"><span class="string">Your memory usage beats 8.16 % of python3 submissions (14.7 MB)</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
-
-<p>可能说的不大清楚哈</p>
-<p>对<code>nums</code>进行遍历，每次遍历到的整数值和<code>temp</code>里的不相等时，就会将前者赋给<code>temp</code>。如果遍历的值与<code>temp</code>相等，则说明遇到了重复值，那么保持<code>temp</code>不变，根据下标删掉当前遍历值，并给<code>offset</code>这个偏移量<code>+1</code></p>
-<p><strong>为什么会有一个偏移量呢？</strong></p>
-<p>举个栗子</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">L &#x3D; [1,1,2,2,3,4]</span><br></pre></td></tr></table></figure>
-
-<p>如果不存在offset这个量<br>我遍历到下标{1]，也就是<code>1</code>的时候，因为它和下标{0]代表的<code>1</code>相等，所以会删掉下标[1]对应的<code>1</code>。<br>Python会自动将后面的元素自动向左补全，那么现在L是这样的</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">L &#x3D; [1,2,2,3,4]</span><br></pre></td></tr></table></figure>
-
-<p>循环的下一个<code>i</code>值为<code>2</code>，如果列表不发生变化，那么这个值是没问题的，我会遍历到第一个<code>2</code></p>
-<p>但是问题就在这里，下标已经发生了变化，我遍历到的将是第二个<code>2</code></p>
-<p>所以我需要这么一个偏移量，删了几个元素，就要往左偏多少</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://www.cnblogs.com/yudanqu/p/9172459.html" target="_blank" rel="noopener">单链表的python实现</a></p>
 
       
       <!-- reward -->
@@ -141,7 +126,7 @@
     <footer class="article-footer">
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li></ul>
 
 
     </footer>
@@ -152,19 +137,19 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/07/12/Python3%E5%8D%95%E9%93%BE%E8%A1%A8%E5%AE%9E%E7%8E%B0/" class="article-nav-link">
+      <a href="/2020/07/12/21-%E5%90%88%E5%B9%B6%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            Python3单链表实现
+            LeetCode-&#34;(21)合并两个有序链表&#34;
           
         </div>
       </a>
     
     
-      <a href="/2020/07/11/20-%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7/" class="article-nav-link">
+      <a href="/2020/07/12/26-%E5%88%A0%E9%99%A4%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E9%A1%B9/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">LeetCode-&#34;(20)有效的括号&#34;</div>
+        <div class="article-nav-title">LeetCode-&#34;(26)删除排序数组中的重复项&#34;</div>
       </a>
     
   </nav>
