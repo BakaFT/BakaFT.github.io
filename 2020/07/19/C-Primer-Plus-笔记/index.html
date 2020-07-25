@@ -71,7 +71,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">2.4k</span>
+            <span class="post-count">2.5k</span>
         </span>
     </span>
 
@@ -229,6 +229,10 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> ar[<span class="number">4</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> *ptr1 = &amp;ar[<span class="number">0</span>];</span><br><span class="line"><span class="keyword">int</span> *ptr2 = &amp;ar[<span class="number">2</span>];</span><br></pre></td></tr></table></figure>
 
 <p>如果对两指针求差，<code>ptr2 - ptr1</code> 得到的值将会是<code>2</code>，是指两个指针所指向的元素相隔两个<code>int</code>，而不是2字节</p>
+<h2 id="Const指针"><a href="#Const指针" class="headerlink" title="Const指针"></a>Const指针</h2><p>对于一个<code>const</code>指针，它可以指向<code>const</code>或<code>非const</code>数据，但是无法做出任何修改</p>
+<p>对于<code>非const</code>指针，它只能指向<code>非const</code>数据，否则通过指针就能改变数据</p>
+<h1 id="有区别吗"><a href="#有区别吗" class="headerlink" title="有区别吗"></a>有区别吗</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">double * const ptr &#x3D; array;</span><br><span class="line">const double *ptr &#x3D; array;</span><br></pre></td></tr></table></figure>
+
 
       
       <!-- reward -->
@@ -251,6 +255,15 @@
   
   
   <nav class="article-nav">
+    
+      <a href="/2020/07/25/C%E4%B8%ADconst%E4%BF%AE%E9%A5%B0%E6%8C%87%E9%92%88%E5%8F%98%E9%87%8F%E7%9A%84%E4%B8%8D%E5%90%8C%E6%83%85%E5%86%B5/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            C中const修饰指针变量的不同情况
+          
+        </div>
+      </a>
     
     
       <a href="/2020/07/16/C-Primer-Plus-%E7%BB%83%E4%B9%A0%E6%9C%AC/" class="article-nav-link">
