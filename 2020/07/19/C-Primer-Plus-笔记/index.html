@@ -71,7 +71,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">2.5k</span>
+            <span class="post-count">2.6k</span>
         </span>
     </span>
 
@@ -80,7 +80,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">10 min</span>
+            <span class="post-count">11 min</span>
         </span>
     </span>
 </div>
@@ -204,7 +204,7 @@
 <blockquote>
 <p>array[n] == *(ar+n)</p>
 </blockquote>
-<p>*(ar + n)大概就是，到内存的ar位置，移动n个单元后，取当前位置值。</p>
+<p>*(ar + n)可以理解为，到内存的ar位置，移动n个单元后，取当前位置值。</p>
 <p>*为简介运算符，此处起<code>解引用</code>作用</p>
 <h3 id="如何在函数形参表示数组"><a href="#如何在函数形参表示数组" class="headerlink" title="如何在函数形参表示数组"></a>如何在函数形参表示数组</h3><p>数组名其实是数组中首个元素的地址，所以在传入数组的时候，其实传入的是一个地址</p>
 <p>所以可以在<code>函数定义</code>中这么写</p>
@@ -231,8 +231,15 @@
 <p>如果对两指针求差，<code>ptr2 - ptr1</code> 得到的值将会是<code>2</code>，是指两个指针所指向的元素相隔两个<code>int</code>，而不是2字节</p>
 <h2 id="Const指针"><a href="#Const指针" class="headerlink" title="Const指针"></a>Const指针</h2><p>对于一个<code>const</code>指针，它可以指向<code>const</code>或<code>非const</code>数据，但是无法做出任何修改</p>
 <p>对于<code>非const</code>指针，它只能指向<code>非const</code>数据，否则通过指针就能改变数据</p>
-<h1 id="有区别吗"><a href="#有区别吗" class="headerlink" title="有区别吗"></a>有区别吗</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">double * const ptr &#x3D; array;</span><br><span class="line">const double *ptr &#x3D; array;</span><br></pre></td></tr></table></figure>
+<h2 id="指针和多维数组"><a href="#指针和多维数组" class="headerlink" title="指针和多维数组"></a>指针和多维数组</h2><p>给出一个二维数组</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> zippo[<span class="number">4</span>][<span class="number">2</span>]=</span><br><span class="line">&#123;</span><br><span class="line">    &#123;<span class="number">1</span>,<span class="number">3</span>&#125;,</span><br><span class="line">    &#123;<span class="number">2</span>,<span class="number">3</span>&#125;,</span><br><span class="line">    &#123;<span class="number">2342</span>,<span class="number">34</span>&#125;,</span><br><span class="line">    &#123;<span class="number">242</span>,<span class="number">234</span>&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
+<p>有下列等式成立</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">zippo == &amp;zippo[<span class="number">0</span>]</span><br><span class="line">zippo[<span class="number">0</span>] == &amp;zippo[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">*zippo == &amp;zippo[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">**zippo == zippo[<span class="number">0</span>][<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+
+<p>因为<strong>数组名是其首元素的地址</strong>，所以前两条很容易得到</p>
+<p>那么在加上解引用符号<code>*</code>，就可以得到下面的两个式子。</p>
+<p>解引用两次才能得到原始值，这被称为<code>双重间接</code></p>
 
       
       <!-- reward -->

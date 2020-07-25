@@ -71,7 +71,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">447</span>
+            <span class="post-count">475</span>
         </span>
     </span>
 
@@ -116,11 +116,13 @@
 <h2 id="修饰p"><a href="#修饰p" class="headerlink" title="修饰p"></a>修饰p</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>* <span class="keyword">const</span> p = &amp;a;`</span><br></pre></td></tr></table></figure>
 
 <p>p是<code>int* const</code>型，此时const修饰<code>p</code>，<strong>必须在定义<code>p</code>时初始化</strong></p>
+<p>不初始化的话，p就是一个<code>野指针</code></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">int</span> *<span class="keyword">const</span> p = &amp;a;</span><br><span class="line">    *p += <span class="number">1</span> ; <span class="comment">// 可行，因为*p并未被const修饰</span></span><br><span class="line">    <span class="comment">//p += 1; // error: assignment of read-only variable 'p'</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d %d"</span>,a,*p);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 5 5</span></span><br></pre></td></tr></table></figure>
 
 
 
-<h2 id="同时修饰p和p指向内容"><a href="#同时修饰p和p指向内容" class="headerlink" title="同时修饰p和p指向内容"></a>同时修饰p和p指向内容</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span>* <span class="keyword">const</span> p = &amp;a;</span><br><span class="line"><span class="keyword">int</span> <span class="keyword">const</span> * <span class="keyword">const</span> p = &amp;a;</span><br></pre></td></tr></table></figure>
+<h2 id="同时修饰p和p指向内容"><a href="#同时修饰p和p指向内容" class="headerlink" title="同时修饰p和p指向内容"></a>同时修饰p和p指向内容</h2><p>其实就是上面两个方法的结合</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span>* <span class="keyword">const</span> p = &amp;a;</span><br><span class="line"><span class="keyword">int</span> <span class="keyword">const</span> * <span class="keyword">const</span> p = &amp;a;</span><br></pre></td></tr></table></figure>
 
 <p>两种写法等效</p>
 <p><code>p</code>和<code>p所指向内容</code>都被const修饰，所以两者都不可改变</p>
