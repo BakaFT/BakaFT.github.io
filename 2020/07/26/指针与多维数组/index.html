@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    C中const修饰指针变量的不同情况 |  BakaFT&#39;s blog
+    指针与多维数组 |  BakaFT&#39;s blog
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -39,7 +39,7 @@
   <div id="app">
     <main class="content on">
       <section class="outer">
-  <article id="post-C中const修饰指针变量的不同情况" class="article article-type-post" itemscope
+  <article id="post-指针与多维数组" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -47,7 +47,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  C中const修饰指针变量的不同情况
+  指针与多维数组
 </h1>
  
 
@@ -56,8 +56,8 @@
 
     
     <div class="article-meta">
-      <a href="/2020/07/25/C%E4%B8%ADconst%E4%BF%AE%E9%A5%B0%E6%8C%87%E9%92%88%E5%8F%98%E9%87%8F%E7%9A%84%E4%B8%8D%E5%90%8C%E6%83%85%E5%86%B5/" class="article-date">
-  <time datetime="2020-07-25T01:54:59.000Z" itemprop="datePublished">2020-07-25</time>
+      <a href="/2020/07/26/%E6%8C%87%E9%92%88%E4%B8%8E%E5%A4%9A%E7%BB%B4%E6%95%B0%E7%BB%84/" class="article-date">
+  <time datetime="2020-07-26T09:55:41.000Z" itemprop="datePublished">2020-07-26</time>
 </a>
       
   <div class="article-category">
@@ -71,7 +71,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">475</span>
+            <span class="post-count">676</span>
         </span>
     </span>
 
@@ -105,34 +105,37 @@
       
 
       
-      <h1 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h1><p>昨天看到指针，const修饰这个部分给我看晕了，今天起来专门写个文章记忆一下</p>
-<h1 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h1><h2 id="修饰p指向内容-修饰-p"><a href="#修饰p指向内容-修饰-p" class="headerlink" title="修饰p指向内容(修饰*p)"></a>修饰p指向内容(修饰*p)</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span>* p = &amp;a;</span><br><span class="line"><span class="keyword">int</span> <span class="keyword">const</span> * p = &amp;a;</span><br></pre></td></tr></table></figure>
+      <h1 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h1><p>指针和多维数组这块有点绕，单独写个笔记</p>
+<h1 id="多维数组中的数组名"><a href="#多维数组中的数组名" class="headerlink" title="多维数组中的数组名"></a>多维数组中的数组名</h1><p>给出一个二维数组</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> zippo[<span class="number">4</span>][<span class="number">2</span>]=</span><br><span class="line">&#123;</span><br><span class="line">    &#123;<span class="number">1</span>,<span class="number">3</span>&#125;,</span><br><span class="line">    &#123;<span class="number">2</span>,<span class="number">3</span>&#125;,</span><br><span class="line">    &#123;<span class="number">2342</span>,<span class="number">34</span>&#125;,</span><br><span class="line">    &#123;<span class="number">242</span>,<span class="number">234</span>&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
-<p>两种写法等效，因为const都在<code>*p</code>左边</p>
-<p>这种情况下，<code>p</code>是<code>const int*</code>型，const修饰的是<code>p指向的内容</code>。<code>解引用</code>后无法进行赋值操作</p>
-<p>因为<code>p</code>本身没有被const修饰，所以指针的值可变，<strong>不必初始化</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">int</span> <span class="keyword">const</span> *p;</span><br><span class="line">    p = &amp;a;</span><br><span class="line">    a += <span class="number">1</span>; <span class="comment">// 不用指针依然可以修改，因为a本身并未被const修饰</span></span><br><span class="line">    <span class="comment">//*p += 1; // error: assignment of read-only location '*p'////</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d %d"</span>, a, *p);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 5 5</span></span><br></pre></td></tr></table></figure>
+<p>有下列等式成立</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">zippo == &amp;zippo[<span class="number">0</span>]</span><br><span class="line">zippo[<span class="number">0</span>] == &amp;zippo[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">*zippo == &amp;zippo[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">**zippo == zippo[<span class="number">0</span>][<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
 
-<h2 id="修饰p"><a href="#修饰p" class="headerlink" title="修饰p"></a>修饰p</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>* <span class="keyword">const</span> p = &amp;a;`</span><br></pre></td></tr></table></figure>
+<p><strong>数组名是其首元素的地址</strong>，所以前两条很容易得到</p>
+<p>那么在加上解引用符号<code>*</code>，就可以得到下面的两个式子。</p>
+<p>解引用两次才能得到原始值，这被称为<code>双重间接</code></p>
+<h1 id="指向多维数组的指针"><a href="#指向多维数组的指针" class="headerlink" title="指向多维数组的指针"></a>指向多维数组的指针</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> (*pz)[<span class="number">2</span>];</span><br><span class="line"><span class="keyword">int</span> * pax[<span class="number">2</span>];</span><br></pre></td></tr></table></figure>
 
-<p>p是<code>int* const</code>型，此时const修饰<code>p</code>，<strong>必须在定义<code>p</code>时初始化</strong></p>
-<p>不初始化的话，p就是一个<code>野指针</code></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">int</span> *<span class="keyword">const</span> p = &amp;a;</span><br><span class="line">    *p += <span class="number">1</span> ; <span class="comment">// 可行，因为*p并未被const修饰</span></span><br><span class="line">    <span class="comment">//p += 1; // error: assignment of read-only variable 'p'</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d %d"</span>,a,*p);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 5 5</span></span><br></pre></td></tr></table></figure>
+<p>考虑一下，有什么区别？</p>
+<p><code>pz</code>指向一个内含两个int类型值的<code>数组</code>，是一个指针</p>
+<p><code>pax</code>是一个内含两个指针的<code>数组</code>，每个元素都是指向int类型型的指针</p>
+<p><strong>为什么</strong>?</p>
+<p>由于<code>()</code>的存在，pz首先与<code>*</code>结合，因此声明的是一个指向数组(内含两个int型元素)的指针</p>
+<p>由于<code>[]</code>优先级更高，先与pax结合，从而声明了一个<code>数组</code>，随后<code>*</code>又表示数组内的元素是指针</p>
+<p>举个例子</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a[<span class="number">3</span>][<span class="number">5</span>] =</span><br><span class="line">        &#123;</span><br><span class="line">            &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;,</span><br><span class="line">            &#123;<span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>&#125;,</span><br><span class="line">            &#123;<span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>&#125;&#125;;</span><br><span class="line">    <span class="keyword">int</span> (*p)[<span class="number">5</span>] = a;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d"</span>,**p);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p>例中声明一个<code>p</code>指针，指向一个包含5个元素的数组，并在初始化时指向二维数组中的第一个数组(数组名就是首元素地址)</p>
+<p>此时<code>p</code>值为<code>{1,2,3,4,5}</code>的地址</p>
+<p>第一次解引用的对象是指针<code>p</code>，也就是``{1,2,3,4,5}<code>的地址，得到了其值(</code>1`的地址)</p>
+<p>第二次解引用的对象指针<code>{1,2,3,4,5}</code>，也就是是<code>1</code>的地址，得到了其值，即为<code>1</code></p>
+<p><strong>一般而言，指向多维数组的指针如下进行声明</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> <span class="built_in">array</span>[<span class="number">1</span>][<span class="number">2</span>][<span class="number">3</span>][<span class="number">4</span>][<span class="number">5</span>]; </span><br><span class="line">    <span class="built_in">array</span>[<span class="number">0</span>][<span class="number">0</span>][<span class="number">0</span>][<span class="number">0</span>][<span class="number">0</span>] = <span class="number">1234</span>;</span><br><span class="line">    <span class="built_in">array</span>[<span class="number">0</span>][<span class="number">0</span>][<span class="number">0</span>][<span class="number">0</span>][<span class="number">1</span>] = <span class="number">12345</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span>(*p1)[<span class="number">2</span>][<span class="number">3</span>][<span class="number">4</span>][<span class="number">5</span>] = <span class="built_in">array</span>; <span class="comment">// 指向五维数组 array</span></span><br><span class="line">    <span class="keyword">int</span>(*p2)[<span class="number">3</span>][<span class="number">4</span>][<span class="number">5</span>] = <span class="built_in">array</span>[<span class="number">0</span>]; <span class="comment">// 指向四维数组 array[0]</span></span><br><span class="line">    <span class="keyword">int</span>(*p3)[<span class="number">4</span>][<span class="number">5</span>] = <span class="built_in">array</span>[<span class="number">0</span>][<span class="number">0</span>]; <span class="comment">// 指向三维数组 array[0][0]</span></span><br><span class="line">    <span class="keyword">int</span>(*p4)[<span class="number">5</span>] = <span class="built_in">array</span>[<span class="number">0</span>][<span class="number">0</span>][<span class="number">0</span>]; <span class="comment">// 指向二维数组 array[0][0][0]</span></span><br><span class="line">    <span class="keyword">int</span>(*p5) = <span class="built_in">array</span>[<span class="number">0</span>][<span class="number">0</span>][<span class="number">0</span>][<span class="number">0</span>]; <span class="comment">// 指向一维数组 array[0][0][0][0]</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d %d %d %d %d\n"</span>,*****(p1),****p2,***p3,**p4,*p5);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d %d %d %d %d"</span>,*(****p1+<span class="number">1</span>),*(***p2+<span class="number">1</span>),*(**p3+<span class="number">1</span>),*(*p4+<span class="number">1</span>),*(p5+<span class="number">1</span>));</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    1234 1234 1234 1234 1234</span></span><br><span class="line"><span class="comment">    12345 12345 12345 12345 12345</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p>如果是作为函数的<strong>形参</strong>，则可以这么写</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">( <span class="keyword">int</span> [][<span class="number">2</span>][<span class="number">3</span>][<span class="number">4</span>][<span class="number">5</span>] )</span></span>; <span class="comment">// 需要传入一个指向五维数的指针</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="同时修饰p和p指向内容"><a href="#同时修饰p和p指向内容" class="headerlink" title="同时修饰p和p指向内容"></a>同时修饰p和p指向内容</h2><p>其实就是上面两个方法的结合</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span>* <span class="keyword">const</span> p = &amp;a;</span><br><span class="line"><span class="keyword">int</span> <span class="keyword">const</span> * <span class="keyword">const</span> p = &amp;a;</span><br></pre></td></tr></table></figure>
-
-<p>两种写法等效</p>
-<p><code>p</code>和<code>p所指向内容</code>都被const修饰，所以两者都不可改变</p>
-<p>同样的，因为指针本身被修饰，<strong>必须定义时初始化</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span>* <span class="keyword">const</span> p = &amp;a;</span><br><span class="line">    <span class="comment">//*p += 1 ; // error: assignment of read-only variable 'p'</span></span><br><span class="line">    <span class="comment">//p += 1; // error: assignment of read-only variable 'p'</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d %d"</span>,a,*p);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 4 4</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>被<code>const</code>修饰的，不能被修改 </p>
-<p>const在<code>*</code>的左边，修饰的就是<code>*p</code>，也就是修饰<code>p</code>指向内容</p>
-<p>const在<code>*</code>的右边，修饰的就是<code>p</code>，也就是<code>p</code>本身</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>[C/C++ const修饰指针变量的三种情况](C/C++ const修饰指针变量的三种情况)</p>
 
       
       <!-- reward -->
@@ -156,19 +159,10 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/07/26/%E6%8C%87%E9%92%88%E4%B8%8E%E5%A4%9A%E7%BB%B4%E6%95%B0%E7%BB%84/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            指针与多维数组
-          
-        </div>
-      </a>
     
-    
-      <a href="/2020/07/19/C-Primer-Plus-%E7%AC%94%E8%AE%B0/" class="article-nav-link">
+      <a href="/2020/07/25/C%E4%B8%ADconst%E4%BF%AE%E9%A5%B0%E6%8C%87%E9%92%88%E5%8F%98%E9%87%8F%E7%9A%84%E4%B8%8D%E5%90%8C%E6%83%85%E5%86%B5/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">C Primer Plus 笔记</div>
+        <div class="article-nav-title">C中const修饰指针变量的不同情况</div>
       </a>
     
   </nav>
