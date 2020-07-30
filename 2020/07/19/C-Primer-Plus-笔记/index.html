@@ -71,7 +71,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">3.4k</span>
+            <span class="post-count">3.6k</span>
         </span>
     </span>
 
@@ -80,7 +80,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">14 min</span>
+            <span class="post-count">15 min</span>
         </span>
     </span>
 </div>
@@ -218,6 +218,12 @@
 <p>由于<code>函数原型</code>可以省略参数名，你还可以在<code>函数原型中</code>这么写</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> *)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> [])</span></span>;</span><br></pre></td></tr></table></figure>
 
+<h2 id="不要在函数内求数组大小"><a href="#不要在函数内求数组大小" class="headerlink" title="不要在函数内求数组大小"></a>不要在函数内求数组大小</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> <span class="built_in">array</span>[<span class="number">5</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d %d\n"</span>,<span class="keyword">sizeof</span>(<span class="built_in">array</span>),<span class="keyword">sizeof</span>(<span class="built_in">array</span>[<span class="number">0</span>]));</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">array_max</span><span class="params">(<span class="keyword">int</span> <span class="built_in">array</span>[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d %d"</span>,<span class="keyword">sizeof</span>(<span class="built_in">array</span>),<span class="keyword">sizeof</span>(<span class="built_in">array</span>[<span class="number">0</span>]));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">" %d"</span>,<span class="keyword">sizeof</span>(<span class="keyword">int</span>*));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">20 4 </span></span><br><span class="line"><span class="comment">8  4  8</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<p>两次的输出不一样，为什么？</p>
+<p><strong>当数组作为函数的参数进行传递时，该数组自动退化为同类型的指针</strong></p>
+<p>对于<code>main</code>函数来说，array是一个数组，可以直接用sizeof求出其”长度”，5个int嘛，所以是20</p>
+<p>对于<code>array_max</code>函数来说，array是一个整型<code>指针</code>，用sizeof求array大小，就相当于<code>sizeof(int*)</code>，在我的电脑上永远是8</p>
 <h2 id="指针操作"><a href="#指针操作" class="headerlink" title="指针操作"></a>指针操作</h2><h3 id="赋值"><a href="#赋值" class="headerlink" title="赋值"></a>赋值</h3><p>把地址赋给指针，可使用<code>数组名</code>，<code>&amp;</code>，另一个<code>指针</code>等</p>
 <h3 id="解引用"><a href="#解引用" class="headerlink" title="解引用"></a>解引用</h3><p><code>*ptr</code>取得指针所指向地址上的值</p>
 <h3 id="取址"><a href="#取址" class="headerlink" title="取址"></a>取址</h3><p>指针变量也有自己的值和地址</p>
