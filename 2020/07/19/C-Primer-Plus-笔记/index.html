@@ -71,7 +71,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">3.6k</span>
+            <span class="post-count">4k</span>
         </span>
     </span>
 
@@ -80,7 +80,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">15 min</span>
+            <span class="post-count">17 min</span>
         </span>
     </span>
 </div>
@@ -122,7 +122,7 @@
 <p>因为例中的else是和第二个if匹配的，改变一下缩进可能会更加明显。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (number &gt;<span class="number">6</span>)</span><br><span class="line">	<span class="keyword">if</span> (number &lt;<span class="number">12</span>)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Case a\n"</span>);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Case b\n"</span>);</span><br></pre></td></tr></table></figure>
 
-<h2 id="条件运算符"><a href="#条件运算符" class="headerlink" title="条件运算符:?"></a>条件运算符:?</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x &#x3D; (y&lt;0) ?-y:y;</span><br></pre></td></tr></table></figure>
+<h2 id="条件运算符"><a href="#条件运算符" class="headerlink" title="条件运算符 :?"></a>条件运算符 :?</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x &#x3D; (y&lt;0) ?-y:y;</span><br></pre></td></tr></table></figure>
 
 
 
@@ -160,7 +160,10 @@
 <p>这就是 VLA (Variable-length-array)，可变长度数组</p>
 <p>VLA必须是自动储存类别，这意味着它无法使用<code>static</code>,<code>extern</code>等储存类别说明符修饰</p>
 <p>另外，在作为<strong>形参</strong>声明时，变量必须先于数组</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> ar[col][row], <span class="keyword">int</span> col, <span class="keyword">int</span> row)</span></span>; <span class="comment">// 无效</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> col, <span class="keyword">int</span> row, <span class="keyword">int</span> ar[col][row])</span></span>; <span class="comment">// 合法</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span>, <span class="keyword">int</span>, <span class="keyword">int</span>[*][*])</span></span>; <span class="comment">// 合法，省略变量名后必须使用星号替代</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> ar[col][row], <span class="keyword">int</span> col, <span class="keyword">int</span> row)</span></span>; <span class="comment">// 无效</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> col, <span class="keyword">int</span> row, <span class="keyword">int</span> ar[col][row])</span></span>; <span class="comment">// 合法</span></span><br></pre></td></tr></table></figure>
+
+<p>在<strong>函数原型</strong>中，可以如下声明</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span>, <span class="keyword">int</span>, <span class="keyword">int</span>[*][*])</span></span>; <span class="comment">// 省略变量名后，使用星号替代</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="二维数组"><a href="#二维数组" class="headerlink" title="二维数组"></a>二维数组</h2><h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> test[<span class="number">2</span>][<span class="number">2</span>] = &#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;  <span class="comment">// 更真实地反应内部储存方式</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"The first number is %d\n"</span>,test[<span class="number">0</span>][<span class="number">0</span>]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"The last number is %d"</span>,test[<span class="number">1</span>][<span class="number">1</span>]); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -280,6 +283,31 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> *p = (<span class="keyword">int</span>[<span class="number">2</span>])&#123;<span class="number">2323</span>, <span class="number">2</span>&#125;;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d"</span>, *p);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>注意，复合字面量也具有类似数组名的特性，<code>p</code>在这里指向了第一个元素<code>2323</code>的地址。</p>
+<h1 id="11"><a href="#11" class="headerlink" title="11"></a>11</h1><h2 id="字符串字面量"><a href="#字符串字面量" class="headerlink" title="字符串字面量"></a>字符串字面量</h2><p>用双引号括起来的内容称为字符串字面量（string literal），也叫作字符串常量（string constant)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *ptr = <span class="string">"Hello！"</span> <span class="comment">//等号右边就是一个字符串字面量</span></span><br></pre></td></tr></table></figure>
+
+<p>通常，字符串都作为可执行文件的一部分储存在数据段中</p>
+<p>当把程序载入内存时，也载入了程序中的字符串</p>
+<p>一般来说,字符串字面量被视为 <strong>const 数据</strong>。这意味着你不能修改字符串字面量，这是一种未定义行为。</p>
+<p>用两行代码来举例</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> * <span class="keyword">word</span> = <span class="string">"frame"</span>;</span><br><span class="line"><span class="keyword">word</span>[<span class="number">1</span>] = <span class="string">'l'</span>;</span><br></pre></td></tr></table></figure>
+
+<p>第一行的写法并不被ISO C所推荐</p>
+<blockquote>
+<p>ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]</p>
+<p>这也强调了，字符串字面量不应被修改</p>
+</blockquote>
+<p>改为如下写法即可解决</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> <span class="keyword">const</span> * <span class="keyword">word</span> = <span class="string">"frame"</span>;</span><br></pre></td></tr></table></figure>
+
+<p>但即使这样，第二行有效吗？</p>
+<p>各个编译器有自己的说法，C primer plus的作者运行环境下允许如此，而我自己的Mingw gcc下编译运行后直接<code>Segmentation fault</code></p>
+<p>所以，不要动字符串字面量，至少不应该</p>
+<h2 id="字符串字面量和字符串数组"><a href="#字符串字面量和字符串数组" class="headerlink" title="字符串字面量和字符串数组"></a>字符串字面量和字符串数组</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *mytalents[<span class="number">5</span>] = &#123;</span><br><span class="line">        <span class="string">"Adding numbers swiftly"</span>,</span><br><span class="line">        <span class="string">"Multiplying accurately"</span>, <span class="string">"Stashing data"</span>,</span><br><span class="line">        <span class="string">"Following instructions to the letter"</span>,</span><br><span class="line">        <span class="string">"Understanding the C language"</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> yourtalents[<span class="number">5</span>][<span class="number">10</span>] = &#123;</span><br><span class="line">        <span class="string">"Walking in a straight line"</span>,</span><br><span class="line">        <span class="string">"Sleeping"</span>, <span class="string">"Watching television"</span>,</span><br><span class="line">        <span class="string">"Mailing letters"</span>, <span class="string">"Reading email"</span></span><br><span class="line">    &#125;;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"\nsizeof mytalents: %zd, sizeof yourtalents: %zd\n"</span>,</span><br><span class="line">           <span class="keyword">sizeof</span>(mytalents), <span class="keyword">sizeof</span>(yourtalents))</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">sizeof mytalents: 40, sizeof yourtalents: 200</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<p><code>mytalents</code>是一个包含了5个指针元素的一维数组，大小为5*8=40</p>
+<p><code>yourtalents</code>是一个包含了5个数组(字符串数组)的二维数组，每个子数组大小为10×4=40，总大小为5×10×4 = 200</p>
+<p><code>mytalents</code>中的指针指向字符串字面量的地址，而<code>yourtalents</code>中储存的是字符串字面量的<strong>副本</strong>，也就是说每个字符串被储存了两次</p>
 
       
       <!-- reward -->
