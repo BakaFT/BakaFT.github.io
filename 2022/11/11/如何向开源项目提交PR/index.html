@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>如何向开源项目提交PR - BakaFT&#039;s blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="BakaFT&#039;s blog"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="BakaFT&#039;s blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="我在前段时间给 Caddy 和 GitHub CLI 分别提交了一个 PR 并被 Merge，初次体验了参与开源社区贡献的流程，本文我将总结一些经验。"><meta property="og:type" content="blog"><meta property="og:title" content="如何向开源项目提交PR"><meta property="og:url" content="https://bakaft.github.io/2022/11/11/%E5%A6%82%E4%BD%95%E5%90%91%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%8F%90%E4%BA%A4PR/"><meta property="og:site_name" content="BakaFT&#039;s blog"><meta property="og:description" content="我在前段时间给 Caddy 和 GitHub CLI 分别提交了一个 PR 并被 Merge，初次体验了参与开源社区贡献的流程，本文我将总结一些经验。"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://bakaft.github.io/img/og_image.png"><meta property="article:published_time" content="2022-11-11T16:57:14.000Z"><meta property="article:modified_time" content="2023-12-28T08:42:40.251Z"><meta property="article:author" content="BakaFT"><meta property="article:tag" content="Tutorial"><meta property="article:tag" content="Git"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://bakaft.github.io/2022/11/11/%E5%A6%82%E4%BD%95%E5%90%91%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%8F%90%E4%BA%A4PR/"},"headline":"如何向开源项目提交PR","image":["https://bakaft.github.io/img/og_image.png"],"datePublished":"2022-11-11T16:57:14.000Z","dateModified":"2023-12-28T08:42:40.251Z","author":{"@type":"Person","name":"BakaFT"},"publisher":{"@type":"Organization","name":"BakaFT's blog","logo":{"@type":"ImageObject","url":{"text":"BakaFT's blog"}}},"description":"我在前段时间给 Caddy 和 GitHub CLI 分别提交了一个 PR 并被 Merge，初次体验了参与开源社区贡献的流程，本文我将总结一些经验。"}</script><link rel="canonical" href="https://bakaft.github.io/2022/11/11/%E5%A6%82%E4%BD%95%E5%90%91%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%8F%90%E4%BA%A4PR/"><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/5.12.0/css/all.min.css"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/highlight.js@9.12.0/styles/idea.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css"><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://fastly.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 6.2.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/">BakaFT&#039;s blog</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2022-11-11T16:57:14.000Z" title="11/11/2022, 4:57:14 PM">2022-11-11</time></span></div></div><h1 class="title is-3 is-size-4-mobile">如何向开源项目提交PR</h1><div class="content"><p>我在前段时间给 <a target="_blank" rel="noopener" href="https://github.com/caddyserver/caddy">Caddy</a> 和 <a target="_blank" rel="noopener" href="https://github.com/cli/cli">GitHub CLI</a> 分别提交了一个 PR 并被 Merge，初次体验了参与开源社区贡献的流程，本文我将总结一些经验。</p>
+<span id="more"></span>
+
+<h1 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h1><p><strong>本文假设读者有一定的 Git 基础</strong></p>
+<p>当你觉得项目需要改进时：</p>
+<ul>
+<li>修复 BUG</li>
+<li>增加功能</li>
+<li>完善文档</li>
+<li>或者其他合理修改目的</li>
+</ul>
+<p>你可以在 GitHub 向项目发起 Pull Request 来申请项目合并你修改过的部分。</p>
+<p>有一定规模的开源项目都会有完整的贡献流程，你可以在项目中找到<code>CONTRIBUTING.md</code>之类的文件，详细阅读其贡献要求。</p>
+<p>对于大多数项目来说，提交 PR 无非如下几步：</p>
+<ol>
+<li>Fork 该项目</li>
+<li>在你的 Fork 中新开一个分支</li>
+<li>在新分支中进行修改</li>
+<li>向原项目发起 Pull Request</li>
+</ol>
+<p>当然，实际操作流程会根据不同项目变化，比如有的项目会要求提交的 PR 一定要有对应的 Issue，那么在必要的情况下我们需要先开一个 Issue 再发起 PR</p>
+<h1 id="发现问题"><a href="#发现问题" class="headerlink" title="发现问题"></a>发现问题</h1><p>你需要先有一个问题，然后才能解决问题</p>
+<p>一般来说，问题来源有两种方式：</p>
+<ul>
+<li>自己在使用的过程中发现 BUG 或者需要改进的地方</li>
+<li>在仓库的 Issues 中浏览，寻找自己可以解决的问题</li>
+</ul>
+<p>对于第一种情况，发现问题后需要反复测试，确保可复现，并上报官方仓库，在 Issue 中讨论，并表示自己可以尝试解决该问题</p>
+<p>对于第二种情况，大部分仓库都会对 Issue 打标签，你可以使用<code>help wanted</code>, <code>pr welcome</code>等标签过滤，帮助你快速找到 Issue</p>
+<h1 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h1><h2 id="修改代码"><a href="#修改代码" class="headerlink" title="修改代码"></a>修改代码</h2><p>毫无疑问的是，你需要先 Fork 原来的仓库。</p>
+<p>对于大部分情况，我的建议是将 Fork 后的仓库 Clone 到本地，或者在 Code Spaces 中修改。如果你的修改粒度很小，比如修正拼写等，那你可以在网页中直接进行操作。</p>
+<p>在本地操作的过程：</p>
+<ol>
+<li><code>git clone</code></li>
+<li><code>git checkout -b &lt;your-branch-name</code></li>
+<li>使用自己喜欢的编辑器修改代码</li>
+</ol>
+<p><strong>如果你的修改量特别大，建议拆分为多个 commit 以增加可阅读性</strong></p>
+<h2 id="通过测试"><a href="#通过测试" class="headerlink" title="通过测试"></a>通过测试</h2><p>写完的代码当然要先测试通过了再推送咯。</p>
+<ul>
+<li><p>一般来说，项目的测试流程会通过贡献文档说明，按照其描述来即可完成本地测试。</p>
+</li>
+<li><p>许多开源项目已经配置了 GitHub Actions CI&#x2F;CD 流程，只要你将代码推送到个人 Fork 仓库，并且确保仓库的 Actions 是开启状态，那么就可以通过 GitHub Actions 来进行自动化测试，你只需要等结果就好了。</p>
+</li>
+</ul>
+<h2 id="推送代码到个人-Fork"><a href="#推送代码到个人-Fork" class="headerlink" title="推送代码到个人 Fork"></a>推送代码到个人 Fork</h2><p>使用<code>git push</code>即可将完成的修改推送到 GitHub。</p>
+<h1 id="发起-Pull-Request"><a href="#发起-Pull-Request" class="headerlink" title="发起 Pull Request"></a>发起 Pull Request</h1><blockquote>
+<p>推荐在 Issue&#x2F;Pull Request 中使用 #ID 的形式进行相互引用</p>
+<p><a target="_blank" rel="noopener" href="https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue">Linking a pull request to an issue - GitHub Docs</a></p>
+</blockquote>
+<p>现在，你可以准备发起一次 Pull Request。</p>
+<p>有的项目建议发起 Issue，随后再发起 PR。例如我在 Caddy 中的一次贡献，我首先发起了<a target="_blank" rel="noopener" href="https://github.com/caddyserver/caddy/pull/5151">PR</a>，随后发起 <a target="_blank" rel="noopener" href="https://github.com/caddyserver/caddy/issues/5152">Issue</a> （其实我搞反了，不过没人在这种事情上较真，对吧？）。</p>
+<p>有的项目，你可以直接发起 PR，如果有，则最好链接到相关的 Issue，比如我在 cli&#x2F;cli 中的 <a target="_blank" rel="noopener" href="https://github.com/cli/cli/pull/6528">这个 PR</a>。</p>
+<p>在你发完之后，就可以等待相关人员对你的 PR 进行回应了。</p>
+<h2 id="Review"><a href="#Review" class="headerlink" title="Review"></a>Review</h2><p>如果你的 PR 是合理的，将会有一个或者多个人对你的代码进行 Review。</p>
+<p>如果所有 Reviewer 都 Approve 了你的代码，那么不久后将进行 Merge 操作。</p>
+<p>当然，如果 Reviewer 对你的代码有问题，他们会在对应代码下进行留言讨论，如果他们觉得你的代码需要修改，就会发起一次修改请求，详见下节</p>
+<h2 id="Requested-changes"><a href="#Requested-changes" class="headerlink" title="Requested changes"></a>Requested changes</h2><p>现在，你需要根据要求修改你的代码。</p>
+<p>正确的流程是：</p>
+<ol>
+<li>直接打开本地 Fork 仓库，在之前的分支上继续进行修改</li>
+<li>使用<code>git push</code>推送到远程 Fork 仓库</li>
+</ol>
+<p>在这一系列操作之后，你可以查看你的 Pull Request 页面，它已经根据你的操作，自动修改了 PR 中的提交内容。</p>
+<p>也就是说，一次 PR 是以两个分支之间的差异为单位的，你可以任意增加 Commit，也可以删除(会显示为 Outdated，但是已经在 GitHub 保存)，所以要熟悉运用<code>git rebase</code>进行操作。</p>
+<p>你可以看看 <a target="_blank" rel="noopener" href="https://github.com/cli/cli/pull/6528">这个 PR</a>， 我在被要求更改之后，一通操作删除了之前被评论的 Commit，并且新增了一些 Commits。</p>
+<h2 id="Merge"><a href="#Merge" class="headerlink" title="Merge"></a>Merge</h2><p>如果所有 Reviewer 都 Approve 你的代码，那么你的代码就会被 手动&#x2F;自动&#x2F;推迟计划到某个版本 进行 Merge，这取决于不同仓库的配置和规划。比如我的第一个 PR 是被手动 Merge 的，而第二个是在所有 Reviewer 审核 Approved 之后，由机器人自动 Merge。</p>
+<h1 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h1><p>以上就是常见的 Pull Request 流程，希望对你有所帮助。</p>
+</div><div class="article-licensing box"><div class="licensing-title"><p>如何向开源项目提交PR</p><p><a href="https://bakaft.github.io/2022/11/11/如何向开源项目提交PR/">https://bakaft.github.io/2022/11/11/如何向开源项目提交PR/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>BakaFT</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2022-11-11</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2023-12-28</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/Tutorial/">Tutorial</a><a class="link-muted mr-2" rel="tag" href="/tags/Git/">Git</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2023/05/02/Popular-OJs-all-over-the-world/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">Popular OJs all over the world</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2022/11/10/6-828-Lab1-cn/"><span class="level-item">6.828-Lab1</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><!--!--><div class="column column-right is-4-tablet is-4-desktop is-4-widescreen  order-3"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#总览"><span class="level-left"><span class="level-item">1</span><span class="level-item">总览</span></span></a></li><li><a class="level is-mobile" href="#发现问题"><span class="level-left"><span class="level-item">2</span><span class="level-item">发现问题</span></span></a></li><li><a class="level is-mobile" href="#解决问题"><span class="level-left"><span class="level-item">3</span><span class="level-item">解决问题</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#修改代码"><span class="level-left"><span class="level-item">3.1</span><span class="level-item">修改代码</span></span></a></li><li><a class="level is-mobile" href="#通过测试"><span class="level-left"><span class="level-item">3.2</span><span class="level-item">通过测试</span></span></a></li><li><a class="level is-mobile" href="#推送代码到个人-Fork"><span class="level-left"><span class="level-item">3.3</span><span class="level-item">推送代码到个人 Fork</span></span></a></li></ul></li><li><a class="level is-mobile" href="#发起-Pull-Request"><span class="level-left"><span class="level-item">4</span><span class="level-item">发起 Pull Request</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#Review"><span class="level-left"><span class="level-item">4.1</span><span class="level-item">Review</span></span></a></li><li><a class="level is-mobile" href="#Requested-changes"><span class="level-left"><span class="level-item">4.2</span><span class="level-item">Requested changes</span></span></a></li><li><a class="level is-mobile" href="#Merge"><span class="level-left"><span class="level-item">4.3</span><span class="level-item">Merge</span></span></a></li></ul></li><li><a class="level is-mobile" href="#结束"><span class="level-left"><span class="level-item">5</span><span class="level-item">结束</span></span></a></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/">BakaFT&#039;s blog</a><p class="is-size-7"><span>&copy; 2023 BakaFT</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p></div></div></div></div></footer><script src="https://fastly.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://fastly.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://fastly.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://fastly.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://fastly.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><div id="outdated"><h6>Your browser is out-of-date!</h6><p>Update your browser to view this website correctly.&amp;npsb;<a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p><p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p></div><script src="https://fastly.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script><script>window.addEventListener("load", function () {
+            outdatedBrowser({
+                bgColor: '#f25648',
+                color: '#ffffff',
+                lowerThan: 'object-fit' // display on IE11 or below
+            });
+        });</script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>

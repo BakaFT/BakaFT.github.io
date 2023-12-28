@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>进程间的通讯方式 - BakaFT&#039;s blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="BakaFT&#039;s blog"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="BakaFT&#039;s blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="简介在 Linux 中有许多种方式允许进程之间进行通讯(Inter-process communication) 由于历史原因，Linux 内核提供System V和POSIX两种实现，两者概念十分相似。尽管如此，仍然推荐使用POSIX实现，因为接口的规范和统一性更好"><meta property="og:type" content="blog"><meta property="og:title" content="进程间的通讯方式"><meta property="og:url" content="https://bakaft.github.io/2022/05/25/%E8%BF%9B%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E8%AE%AF%E6%96%B9%E5%BC%8F/"><meta property="og:site_name" content="BakaFT&#039;s blog"><meta property="og:description" content="简介在 Linux 中有许多种方式允许进程之间进行通讯(Inter-process communication) 由于历史原因，Linux 内核提供System V和POSIX两种实现，两者概念十分相似。尽管如此，仍然推荐使用POSIX实现，因为接口的规范和统一性更好"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://gcore.jsdelivr.net/gh/bakaft/hexo-blog-img@master/img/2022/05/25/linux-message-queue.png"><meta property="og:image" content="https://gcore.jsdelivr.net/gh/bakaft/hexo-blog-img@master/img/2022/05/26/share_memory.png"><meta property="og:image" content="https://gcore.jsdelivr.net/gh/bakaft/hexo-blog-img@master/img/2022/05/27/share_mem_file_mapping.png"><meta property="og:image" content="https://gcore.jsdelivr.net/gh/bakaft/hexo-blog-img@master/img/2022/05/27/id_and_handle.png"><meta property="og:image" content="https://gcore.jsdelivr.net/gh/bakaft/hexo-blog-img@master/img/2022/05/27/id_and_handle.png"><meta property="og:image" content="https://gcore.jsdelivr.net/gh/bakaft/hexo-blog-img@master/img/2022/05/27/persistence.png"><meta property="og:image" content="https://man7.org/tlpi/cover/TLPI-front-cover.png"><meta property="article:published_time" content="2022-05-25T13:50:22.000Z"><meta property="article:modified_time" content="2023-12-28T08:42:40.251Z"><meta property="article:author" content="BakaFT"><meta property="article:tag" content="Linux"><meta property="article:tag" content="IPC"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="https://gcore.jsdelivr.net/gh/bakaft/hexo-blog-img@master/img/2022/05/25/linux-message-queue.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://bakaft.github.io/2022/05/25/%E8%BF%9B%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E8%AE%AF%E6%96%B9%E5%BC%8F/"},"headline":"进程间的通讯方式","image":["https://gcore.jsdelivr.net/gh/bakaft/hexo-blog-img@master/img/2022/05/25/linux-message-queue.png","https://gcore.jsdelivr.net/gh/bakaft/hexo-blog-img@master/img/2022/05/26/share_memory.png","https://gcore.jsdelivr.net/gh/bakaft/hexo-blog-img@master/img/2022/05/27/share_mem_file_mapping.png","https://gcore.jsdelivr.net/gh/bakaft/hexo-blog-img@master/img/2022/05/27/id_and_handle.png","https://gcore.jsdelivr.net/gh/bakaft/hexo-blog-img@master/img/2022/05/27/id_and_handle.png","https://gcore.jsdelivr.net/gh/bakaft/hexo-blog-img@master/img/2022/05/27/persistence.png","https://man7.org/tlpi/cover/TLPI-front-cover.png"],"datePublished":"2022-05-25T13:50:22.000Z","dateModified":"2023-12-28T08:42:40.251Z","author":{"@type":"Person","name":"BakaFT"},"publisher":{"@type":"Organization","name":"BakaFT's blog","logo":{"@type":"ImageObject","url":{"text":"BakaFT's blog"}}},"description":"简介在 Linux 中有许多种方式允许进程之间进行通讯(Inter-process communication) 由于历史原因，Linux 内核提供System V和POSIX两种实现，两者概念十分相似。尽管如此，仍然推荐使用POSIX实现，因为接口的规范和统一性更好"}</script><link rel="canonical" href="https://bakaft.github.io/2022/05/25/%E8%BF%9B%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E8%AE%AF%E6%96%B9%E5%BC%8F/"><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/5.12.0/css/all.min.css"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/highlight.js@9.12.0/styles/idea.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css"><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://fastly.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 6.2.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/">BakaFT&#039;s blog</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2022-05-25T13:50:22.000Z" title="5/25/2022, 1:50:22 PM">2022-05-25</time></span></div></div><h1 class="title is-3 is-size-4-mobile">进程间的通讯方式</h1><div class="content"><h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>在 Linux 中有许多种方式允许进程之间进行通讯(Inter-process communication)</p>
+<p>由于历史原因，Linux 内核提供<code>System V</code>和<code>POSIX</code>两种实现，两者概念十分相似。尽管如此，仍然推荐使用<code>POSIX</code>实现，因为接口的规范和统一性更好</p>
+<span id="more"></span>
+
+<p>这些 IPC 方法可以按照如下方式分类（完整列表请看参考中的 Presentation)：</p>
+<ul>
+<li>通讯 Communication<ul>
+<li>数据传输 Data transfer<ul>
+<li>字节流 Byte stream<ul>
+<li>匿名管道 Pipe</li>
+<li>命名管道 FIFO</li>
+<li>流式套接字 Steam socket</li>
+</ul>
+</li>
+<li>消息 Message<ul>
+<li>SystemV Message queue</li>
+<li>POSIX Messag queue</li>
+<li>数据报套接字 Datagram socket</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>共享内存 Shared memory<ul>
+<li>SystemV shmem</li>
+<li>POSIX shmem</li>
+<li>内存映射 Memory mapping<ul>
+<li>匿名 Anonymous</li>
+<li>文件映射 File mapping</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>同步 Synchronization<ul>
+<li>信号量 Semaphore<ul>
+<li>SystemV semaphore</li>
+<li>POSIX semaphore</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>信号 Singal<ul>
+<li>实时信号 Realtime</li>
+<li>标准信号 Standard</li>
+</ul>
+</li>
+</ul>
+<h1 id="匿名管道-Pipe"><a href="#匿名管道-Pipe" class="headerlink" title="匿名管道 Pipe"></a>匿名管道 Pipe</h1><p>平时在 Shell 中经常用到，使用方法就是在命令间使用<code>|</code>连接</p>
+<p>它的作用是把<strong>前一个</strong>命令的<strong>输出</strong>作为<strong>后一个</strong>命令的<strong>输入</strong></p>
+<p>比如在搜索时就会经常用到：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Cywair@Cywair-mach:/$ <span class="built_in">cat</span> var/log/syslog.1 |grep <span class="string">&quot;cron&quot;</span></span><br><span class="line">May 24 00:17:01 Cywair-mach CRON[585699]: (root) CMD (   <span class="built_in">cd</span> / &amp;&amp; run-parts --report /etc/cron.hourly)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bakaft@BakaFT-PC:~$ <span class="built_in">ls</span> -al | grep <span class="string">&quot;socket&quot;</span></span><br><span class="line">drwxrwxr-x  9 bakaft bakaft  4096 May 23 12:05 socket-programming</span><br></pre></td></tr></table></figure>
+
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>在 Xv6 的学习过程中实现过 <a href="https://bakaft.github.io/2021/11/04/6-828-Hw2-Shell/">6.828-Hw2-Shell - BakaFT’s blog</a></p>
+<p>简单来说：</p>
+<ol>
+<li>使用<code>pipe()</code>创建管道（p[0]指向 Write 端，p[1]指向 Read 端）</li>
+<li>使用<code>fork()</code>创建两个子进程（子进程继承了父进程的管道描述符）</li>
+<li>第一个子进程运行左程序，并且使用<code>dup2()</code>将<code>stdout</code>指向管道的 Write 端</li>
+<li>第二个子进程运行右程序，并且使用<code>dup2()</code>将<code>stdin</code>指向管道的 Read 端</li>
+<li>关闭非必要的文件描述符，避免阻塞现象</li>
+</ol>
+<h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><ul>
+<li><p>随进程持续</p>
+</li>
+<li><p>不存在于文件系统中，直接与内核内存中的缓冲区连通</p>
+</li>
+<li><p>存在阻塞现象：</p>
+<ul>
+<li>读管道时，管道为空，Write 端存在引用，则会阻塞</li>
+<li>写管道时，管道已满，Read 端存在引用，则会阻塞</li>
+</ul>
+</li>
+</ul>
+<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><ul>
+<li><p>半双工通信，只能从 Write 端到 Read 端</p>
+</li>
+<li><p>只能做到亲缘关系进程之间的通讯</p>
+</li>
+<li><p>容量小，满了再写就要阻塞</p>
+<ul>
+<li><p>Linux 2.6.11 前，容量为 4096 字节</p>
+</li>
+<li><p>Linux 2.6.11 后，容量为 65535 字节</p>
+</li>
+<li><p>Linux 2.6.35 后，使用<code>fcntl(fd, F_SETPIPE_SZ, size)</code>可以自行调节，但不具有移植性</p>
+<p>这里补充一下，最高值由<code>/proc/sys/fs/pipe−max−size</code>限定</p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="命名管道-Named-pipe-FIFO"><a href="#命名管道-Named-pipe-FIFO" class="headerlink" title="命名管道 Named pipe (FIFO)"></a>命名管道 Named pipe (FIFO)</h1><p>顾名思义，这个管道是有名字的</p>
+<p>打开两个终端，进行如下操作，即可看到效果</p>
+<p>创建管道并查看内容，这个管道会以文件形式存在</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">bakaft@BakaFT-PC:~$ <span class="built_in">tty</span></span><br><span class="line">/dev/pts/1</span><br><span class="line">bakaft@BakaFT-PC:~$ <span class="built_in">mkfifo</span> named-pipe</span><br><span class="line">bakaft@BakaFT-PC:~$ <span class="built_in">ls</span> -al named-pipe</span><br><span class="line">prw-r--r-- 1 bakaft bakaft 0 May 25 14:53 named-pipe</span><br><span class="line">bakaft@BakaFT-PC:~$ <span class="built_in">cat</span> named-pipe</span><br><span class="line">Hi there, I<span class="string">&#x27;ve redirected my keyboard input to this pipe.</span></span><br><span class="line"><span class="string">bakaft@BakaFT-PC:~$</span></span><br></pre></td></tr></table></figure>
+
+<p>将键盘输入重定向到管道并输入字符串</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">bakaft@BakaFT-PC:~$ <span class="built_in">tty</span></span><br><span class="line">/dev/pts/0</span><br><span class="line">bakaft@BakaFT-PC:~$ <span class="built_in">cat</span>&gt;named-pipe</span><br><span class="line">Hi there, I<span class="string">&#x27;ve redirected my keyboard input to this pipe.</span></span><br><span class="line"><span class="string">^C</span></span><br><span class="line"><span class="string">bakaft@BakaFT-PC:~$ </span></span><br></pre></td></tr></table></figure>
+
+<p>另外，还可以在 C 中调用<a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man3/mkfifo.3.html">mkfifo(3)</a>实现</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">mkfifo</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *pathname, <span class="type">mode_t</span> mode)</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h2><ul>
+<li>随进程持续</li>
+<li>全双工通信</li>
+<li>以文件形式存在</li>
+<li>可以做到无关程序之间的通讯</li>
+<li>遵循 FIFO 原则，从头开始读，从尾开始写</li>
+</ul>
+<h2 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h2><ul>
+<li>存在与匿名管道一样的阻塞现象（但是你可以在 C 调用时通过<code>mode</code>参数改为非阻塞模式，具体看 man page）</li>
+</ul>
+<h1 id="消息队列-Message-queue"><a href="#消息队列-Message-queue" class="headerlink" title="消息队列 Message queue"></a>消息队列 Message queue</h1><h2 id="特点-2"><a href="#特点-2" class="headerlink" title="特点"></a>特点</h2><ul>
+<li>随内核持续</li>
+</ul>
+<h2 id="System-V-MQ"><a href="#System-V-MQ" class="headerlink" title="System V MQ"></a>System V MQ</h2><p>消息队列本质上是位于内核空间的链表，链表的每个节点都是一条消息</p>
+<p>每一条消息都有自己的消息类型，消息类型用整数来表示，而且必须大于 0。每种类型的消息都被对应的链表所维护：</p>
+<p><img src="https://gcore.jsdelivr.net/gh/bakaft/hexo-blog-img@master/img/2022/05/25/linux-message-queue.png"></p>
+<p>特别的是，消息类型为 0 的链表按照加入队列的顺序记录了所有消息</p>
+<h2 id="POSIX-MQ"><a href="#POSIX-MQ" class="headerlink" title="POSIX MQ"></a>POSIX MQ</h2><p>与 System V MQ 类似，但是</p>
+<ul>
+<li><p>相比前者是用整数，它使用<code>/somename</code>的形式标记</p>
+</li>
+<li><p>存在一个通知机制</p>
+</li>
+<li><p>消息队列存在于一个虚拟文件系统</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">bakaft@BakaFT-PC:/$ <span class="built_in">mkdir</span> /dev/mqueue</span><br><span class="line">bakaft@BakaFT-PC:/$ mount -t mqueue none /dev/mqueue</span><br><span class="line">bakaft@BakaFT-PC:/dev/mqueue$ <span class="built_in">ls</span></span><br><span class="line">test-queue</span><br><span class="line">bakaft@BakaFT-PC:/dev/mqueue$ <span class="built_in">cat</span> test-queue </span><br><span class="line">QSIZE:0          NOTIFY:0     SIGNO:0     NOTIFY_PID:0     </span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="通知机制"><a href="#通知机制" class="headerlink" title="通知机制"></a>通知机制</h3><p>应用程序可以注册到某个队列来收取通知</p>
+<ul>
+<li>当消息到达之前<strong>为空队列</strong>时，会被通知</li>
+<li>可以选择通知方式<ul>
+<li>发送一个 Signal</li>
+<li>启动一个新的线程</li>
+</ul>
+</li>
+</ul>
+<p>需要注意</p>
+<ul>
+<li>任意时刻只能有一个进程能够向某个消息队列 注册接收通知</li>
+<li>在注册进程收到了一条通知后，注册信息失效</li>
+<li>如果其他程序正在接收通知，注册进程就不会收到通知</li>
+<li>通过指定<code>notification</code>参数为<code>NULL</code>来取消注册</li>
+</ul>
+<h3 id="特点-3"><a href="#特点-3" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>面向消息通讯</li>
+<li>消息具有优先级</li>
+<li>具有消息通知机制</li>
+<li>存在引用计数，只有当所有使用队列的进程全部关闭才会标记删除</li>
+</ul>
+<h3 id="缺点-2"><a href="#缺点-2" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>严格按照优先级，但丢失了像 System V MQ 消息分类的灵活性</li>
+</ul>
+<h1 id="共享内存-Shared-memory"><a href="#共享内存-Shared-memory" class="headerlink" title="共享内存 Shared memory"></a>共享内存 Shared memory</h1><p>进程之间共享同样的物理内存页面，他们的“通讯”就是在内存中交换数据</p>
+<p><img src="https://gcore.jsdelivr.net/gh/bakaft/hexo-blog-img@master/img/2022/05/26/share_memory.png"></p>
+<h2 id="特点-4"><a href="#特点-4" class="headerlink" title="特点"></a>特点</h2><ul>
+<li><p>随内核持续</p>
+</li>
+<li><p>效率高</p>
+<p>直接在用户内存空间共享，而非 <strong>用户内存 A&#x3D;&gt;内核内存&#x3D;&gt;用户内存 B</strong> 这样的交换</p>
+</li>
+</ul>
+<h2 id="缺点-3"><a href="#缺点-3" class="headerlink" title="缺点"></a>缺点</h2><ul>
+<li>需要注意同步</li>
+</ul>
+<h2 id="mmap-介绍"><a href="#mmap-介绍" class="headerlink" title="mmap 介绍"></a>mmap 介绍</h2><p>接下来的三种内存共享方式均需要用到 <a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/mmap.2.html">mmap(2) - Linux manual page (man7.org)</a></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> *<span class="title function_">mmap</span><span class="params">(<span class="type">void</span> *addr, <span class="type">size_t</span> length, <span class="type">int</span> prot, <span class="type">int</span> flags,</span></span><br><span class="line"><span class="params">                  <span class="type">int</span> fd, <span class="type">off_t</span> offset)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>关于 mmap 的部分 flag:</p>
+<ul>
+<li><p><code>MAP_SHARED</code>表示对映射区域的修改会写回文件，并且在进程之间共享</p>
+<p>尽管会写回，但是需要尽量调用<code>msync()</code>保证写回一定会执行</p>
+</li>
+<li><p><code>MAP_PRIVATE</code>表示既不写回，也不在进程之间共享，这是一种实现<code>malloc</code>的思路，但是下面不会用到</p>
+</li>
+</ul>
+<h2 id="匿名共享映射-Shared-anonymous-mappings"><a href="#匿名共享映射-Shared-anonymous-mappings" class="headerlink" title="匿名共享映射 Shared anonymous mappings"></a>匿名共享映射 Shared anonymous mappings</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span>* addr = mmap(<span class="literal">NULL</span>,<span class="number">0x64</span>,PROT_READ|PROT_WRITE,MAP_SHARED|MAP_ANONYMOUS,<span class="number">-1</span>,<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="特点-5"><a href="#特点-5" class="headerlink" title="特点"></a>特点</h3><ul>
+<li><p>适用于亲缘进程 不需要文件系统支持</p>
+</li>
+<li><p>mmap() 中的<code>fd</code>和<code>offset</code>是不需要的，但是出于移植性考虑建议赋值为<code>-1</code>和<code>0</code></p>
+<blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">MAP_ANONYMOUS</span><br><span class="line">The mapping is not backed by any file; its contents are</span><br><span class="line">initialized to zero.  The fd argument is ignored; however,</span><br><span class="line">some implementations require fd to be -1 if MAP_ANONYMOUS</span><br><span class="line">(or MAP_ANON) is specified, and portable applications</span><br><span class="line">should ensure this.  The offset argument should be zero.</span><br><span class="line">The use of MAP_ANONYMOUS in conjunction with MAP_SHARED is</span><br><span class="line">supported on Linux only since kernel 2.4.</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>父子进程共享<code>addr:length</code>之间的内存</p>
+</li>
+</ul>
+<h2 id="文件共享映射-Shared-file-mappings"><a href="#文件共享映射-Shared-file-mappings" class="headerlink" title="文件共享映射 Shared file mappings"></a>文件共享映射 Shared file mappings</h2><p><img src="https://gcore.jsdelivr.net/gh/bakaft/hexo-blog-img@master/img/2022/05/27/share_mem_file_mapping.png"></p>
+<h3 id="特点-6"><a href="#特点-6" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>适用于非亲缘进程，需要文件系统支持</li>
+<li>内存内容从文件初始化</li>
+<li>所有共享同一个文件的进程共享同一块内存</li>
+</ul>
+<h2 id="POSIX-共享内存-POSIX-shared-memory"><a href="#POSIX-共享内存-POSIX-shared-memory" class="headerlink" title="POSIX 共享内存 POSIX shared memory"></a>POSIX 共享内存 POSIX shared memory</h2><h3 id="特点-7"><a href="#特点-7" class="headerlink" title="特点"></a>特点</h3><ul>
+<li><p>适用于非亲缘进程，不需要传统文件系统支持</p>
+</li>
+<li><p>避免 I&#x2F;O 开销</p>
+</li>
+<li><p>存在于一个虚拟文件系统(tmpfs 类型)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bakaft@BakaFT-PC:/dev/shm$ <span class="built_in">ls</span></span><br><span class="line">test-shm</span><br><span class="line">bakaft@BakaFT-PC:/dev/shm$ <span class="built_in">cat</span> test-shm </span><br><span class="line">This is a string shared between using POSIX shared memory</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="信号量-Semaphore"><a href="#信号量-Semaphore" class="headerlink" title="信号量 Semaphore"></a>信号量 Semaphore</h1><h2 id="POSIX-Semaphore"><a href="#POSIX-Semaphore" class="headerlink" title="POSIX Semaphore"></a>POSIX Semaphore</h2><p>Semaphore 是由内核维护的整数，代表了一种共享资源的剩余数量，当值为 0 时再申请，会发生阻塞并将值下降到负数</p>
+<ul>
+<li><p>两个基本操作</p>
+<ul>
+<li><p>sem_post(): 增加 1</p>
+</li>
+<li><p>sem_wait(): 减少 1</p>
+<p>可能会由于资源缺少而阻塞</p>
+</li>
+</ul>
+</li>
+<li><p>常用于：布尔值的表示</p>
+<ul>
+<li>单一资源（如共享内存是否正在被使用）</li>
+</ul>
+</li>
+</ul>
+<h3 id="匿名信号量-unnamed-semaphore"><a href="#匿名信号量-unnamed-semaphore" class="headerlink" title="匿名信号量 unnamed semaphore"></a>匿名信号量 unnamed semaphore</h3><ul>
+<li><p>随进程持续</p>
+</li>
+<li><p>使用<code>sem_init()</code>初始化</p>
+<p>通常把它放到共享内存中实现跨进程状态保存</p>
+</li>
+</ul>
+<h3 id="命名信号量-named-semaphnore"><a href="#命名信号量-named-semaphnore" class="headerlink" title="命名信号量 named semaphnore"></a>命名信号量 named semaphnore</h3><ul>
+<li><p>随内核持续</p>
+</li>
+<li><p>使用<code>sem_open()</code>初始化，具有<code>/somename</code>类型的名字</p>
+<p>这个<code>somename</code>的长度被限定为<code>NAME_MAX-4</code>，这和它在文件系统的文件名格式有关</p>
+</li>
+<li><p>命名信号量存在于一个虚拟文件系统(tmpfs 类型)，以<code>sem.somename</code>的形式存在</p>
+<p>（为什么要和共享内存在一个文件夹呢？）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bakaft@BakaFT-PC:/dev/shm$ <span class="built_in">ls</span></span><br><span class="line">sem.reader  sem.writer																					</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="套接字-Socket"><a href="#套接字-Socket" class="headerlink" title="套接字 Socket"></a>套接字 Socket</h1><p>一个典型的套接字</p>
+<p><code>fd = socket(domain,type,protocol)</code></p>
+<h2 id="特点-8"><a href="#特点-8" class="headerlink" title="特点"></a>特点</h2><ul>
+<li>随进程持续</li>
+<li>双向通信</li>
+<li>基于更高的层次实现</li>
+</ul>
+<h2 id="域-Domain"><a href="#域-Domain" class="headerlink" title="域 Domain"></a>域 Domain</h2><ul>
+<li>Unix domain(AF_UNIX)<ul>
+<li>用于主机内部通讯</li>
+<li>地址为文件路径</li>
+</ul>
+</li>
+<li>IPv4 domain(AF_INET)<ul>
+<li>在 IPv4 网络间通讯</li>
+<li>地址是 32 位 IPv4 地址+端口</li>
+</ul>
+</li>
+<li>IPv6 domain(AF_INET6)<ul>
+<li>在 IPv6 网络间通讯</li>
+<li>地址是 128 位 IPv6 地址+端口</li>
+</ul>
+</li>
+</ul>
+<h2 id="类型-Type"><a href="#类型-Type" class="headerlink" title="类型 Type"></a>类型 Type</h2><p>在所有的 Domain 中，有两种主要的可用 Type：</p>
+<ul>
+<li>流式传输 Stream(SOCK_STREAM)</li>
+<li>数据报传输 Datagram(SOCK_DGRAM)</li>
+</ul>
+<p>在 Unix domain 中，额外还有：</p>
+<ul>
+<li><p>顺序报文传输(SOCK_SEQPACKET)</p>
+<p>通常配合 IPPROTO_SCTP 使用</p>
+</li>
+</ul>
+<h2 id="流式套接字-Steam-socket"><a href="#流式套接字-Steam-socket" class="headerlink" title="流式套接字 Steam socket"></a>流式套接字 Steam socket</h2><ul>
+<li><p>类型使用<code>SOCK_STREAM</code></p>
+</li>
+<li><p>字节流传输</p>
+</li>
+<li><p>面向连接</p>
+</li>
+<li><p>可靠，数据按顺序且不重复地到达或者全部不到达</p>
+</li>
+<li><p>在 Internet 域上使用 TCP 协议</p>
+</li>
+</ul>
+<h2 id="数据报套接字-Datagram-socket"><a href="#数据报套接字-Datagram-socket" class="headerlink" title="数据报套接字 Datagram socket"></a>数据报套接字 Datagram socket</h2><ul>
+<li>类型使用<code>SOCK_DGRAM</code></li>
+<li>面向消息</li>
+<li>无连接</li>
+<li>不可靠：<ul>
+<li>可能包会重复</li>
+<li>可能乱序</li>
+<li>可能根本收不到</li>
+</ul>
+</li>
+<li>在 Internet 域使用 UDP 协议</li>
+</ul>
+<h2 id="顺序报文套接字-Sequential-packet-socket"><a href="#顺序报文套接字-Sequential-packet-socket" class="headerlink" title="顺序报文套接字 Sequential packet socket"></a>顺序报文套接字 Sequential packet socket</h2><ul>
+<li>类型使用<code>SOCK_SEQPACKET</code></li>
+<li>处于流式套接字和数据报套接字之间<ul>
+<li>面向消息</li>
+<li>面向连接</li>
+<li>可靠</li>
+</ul>
+</li>
+<li>在 Unix 域，只能使用 SCTP 协议</li>
+</ul>
+<h2 id="关于套接字的一些小知识"><a href="#关于套接字的一些小知识" class="headerlink" title="关于套接字的一些小知识"></a>关于套接字的一些小知识</h2><ul>
+<li><p>双向通讯</p>
+</li>
+<li><p>UNIX 域的<code>数据报套接字</code>是<code>可靠</code>的</p>
+<p>在本机，很难出现问题，是吧？</p>
+</li>
+<li><p>UXIX 域的套接字可以传递文件描述符</p>
+<p>？有点读不懂，待验证</p>
+</li>
+<li><p>对于（狭义）网络通信来说，Internet 域套接字是唯一的方法</p>
+</li>
+<li><p>UDP 套接字允许广播或多播数据报</p>
+</li>
+<li><p><code>socketpair()</code></p>
+<ul>
+<li>在 UNIX 域使用</li>
+<li>双向</li>
+</ul>
+<p>可以用来做到父子进程的双向通讯</p>
+</li>
+</ul>
+<h1 id="附录：不同-IPC-的-ID-和句柄类型"><a href="#附录：不同-IPC-的-ID-和句柄类型" class="headerlink" title="附录：不同 IPC 的 ID 和句柄类型"></a>附录：不同 IPC 的 ID 和句柄类型</h1><p><img src="https://gcore.jsdelivr.net/gh/bakaft/hexo-blog-img@master/img/2022/05/27/id_and_handle.png"></p>
+<h1 id="附录：不同-IPC-的访问权限"><a href="#附录：不同-IPC-的访问权限" class="headerlink" title="附录：不同 IPC 的访问权限"></a>附录：不同 IPC 的访问权限</h1><p><img src="https://gcore.jsdelivr.net/gh/bakaft/hexo-blog-img@master/img/2022/05/27/id_and_handle.png"></p>
+<h1 id="附录：不同-IPC-的生命周期"><a href="#附录：不同-IPC-的生命周期" class="headerlink" title="附录：不同 IPC 的生命周期"></a>附录：不同 IPC 的生命周期</h1><ul>
+<li><p>随进程持续，Process</p>
+<p>直到最后一个打开它的进程结束</p>
+</li>
+<li><p>随内核持续，Kernel</p>
+<p>直到重启</p>
+</li>
+<li><p>随文件持续，Filesystem</p>
+</li>
+</ul>
+<p><img src="https://gcore.jsdelivr.net/gh/bakaft/hexo-blog-img@master/img/2022/05/27/persistence.png"></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>本文主要参考了 Michael Kerrisk 在 linux.conf.au 2013 的 Presentation: <a target="_blank" rel="noopener" href="https://man7.org/conf/lca2013/IPC_Overview-LCA-2013-printable.pdf"><em>An introduction to  Linux IPC</em></a></p>
+<p>Michael Kerrisk</p>
+<ul>
+<li><p><em>The Linux Programming Interface</em>  的作者</p>
+<p><img src="https://man7.org/tlpi/cover/TLPI-front-cover.png" alt="TLPI front cover"></p>
+</li>
+<li><p>Linux man-pages maintainer</p>
+<p>Kernel.org&#x2F;doc&#x2F;man-pages 和 man7.org 由他维护</p>
+</li>
+</ul>
+</div><div class="article-licensing box"><div class="licensing-title"><p>进程间的通讯方式</p><p><a href="https://bakaft.github.io/2022/05/25/进程间的通讯方式/">https://bakaft.github.io/2022/05/25/进程间的通讯方式/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>BakaFT</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2022-05-25</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2023-12-28</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/Linux/">Linux</a><a class="link-muted mr-2" rel="tag" href="/tags/IPC/">IPC</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2022/09/30/%E4%BD%BF%E7%94%A8GNU-C%E6%89%A9%E5%B1%95%E5%AE%9E%E7%8E%B0C%E7%9A%84%E5%8F%8D%E5%B0%84/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">使用GNU C扩展实现C的反射</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2022/05/24/Ubuntu%E4%B8%8B%E9%83%A8%E7%BD%B2Spring-Boot-2-7%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/"><span class="level-item">Ubuntu下部署Spring Boot 2.7开发环境</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><!--!--><div class="column column-right is-4-tablet is-4-desktop is-4-widescreen  order-3"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#简介"><span class="level-left"><span class="level-item">1</span><span class="level-item">简介</span></span></a></li><li><a class="level is-mobile" href="#匿名管道-Pipe"><span class="level-left"><span class="level-item">2</span><span class="level-item">匿名管道 Pipe</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#实现"><span class="level-left"><span class="level-item">2.1</span><span class="level-item">实现</span></span></a></li><li><a class="level is-mobile" href="#特点"><span class="level-left"><span class="level-item">2.2</span><span class="level-item">特点</span></span></a></li><li><a class="level is-mobile" href="#缺点"><span class="level-left"><span class="level-item">2.3</span><span class="level-item">缺点</span></span></a></li></ul></li><li><a class="level is-mobile" href="#命名管道-Named-pipe-FIFO"><span class="level-left"><span class="level-item">3</span><span class="level-item">命名管道 Named pipe (FIFO)</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#特点-1"><span class="level-left"><span class="level-item">3.1</span><span class="level-item">特点</span></span></a></li><li><a class="level is-mobile" href="#缺点-1"><span class="level-left"><span class="level-item">3.2</span><span class="level-item">缺点</span></span></a></li></ul></li><li><a class="level is-mobile" href="#消息队列-Message-queue"><span class="level-left"><span class="level-item">4</span><span class="level-item">消息队列 Message queue</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#特点-2"><span class="level-left"><span class="level-item">4.1</span><span class="level-item">特点</span></span></a></li><li><a class="level is-mobile" href="#System-V-MQ"><span class="level-left"><span class="level-item">4.2</span><span class="level-item">System V MQ</span></span></a></li><li><a class="level is-mobile" href="#POSIX-MQ"><span class="level-left"><span class="level-item">4.3</span><span class="level-item">POSIX MQ</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#通知机制"><span class="level-left"><span class="level-item">4.3.1</span><span class="level-item">通知机制</span></span></a></li><li><a class="level is-mobile" href="#特点-3"><span class="level-left"><span class="level-item">4.3.2</span><span class="level-item">特点</span></span></a></li><li><a class="level is-mobile" href="#缺点-2"><span class="level-left"><span class="level-item">4.3.3</span><span class="level-item">缺点</span></span></a></li></ul></li></ul></li><li><a class="level is-mobile" href="#共享内存-Shared-memory"><span class="level-left"><span class="level-item">5</span><span class="level-item">共享内存 Shared memory</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#特点-4"><span class="level-left"><span class="level-item">5.1</span><span class="level-item">特点</span></span></a></li><li><a class="level is-mobile" href="#缺点-3"><span class="level-left"><span class="level-item">5.2</span><span class="level-item">缺点</span></span></a></li><li><a class="level is-mobile" href="#mmap-介绍"><span class="level-left"><span class="level-item">5.3</span><span class="level-item">mmap 介绍</span></span></a></li><li><a class="level is-mobile" href="#匿名共享映射-Shared-anonymous-mappings"><span class="level-left"><span class="level-item">5.4</span><span class="level-item">匿名共享映射 Shared anonymous mappings</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#特点-5"><span class="level-left"><span class="level-item">5.4.1</span><span class="level-item">特点</span></span></a></li></ul></li><li><a class="level is-mobile" href="#文件共享映射-Shared-file-mappings"><span class="level-left"><span class="level-item">5.5</span><span class="level-item">文件共享映射 Shared file mappings</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#特点-6"><span class="level-left"><span class="level-item">5.5.1</span><span class="level-item">特点</span></span></a></li></ul></li><li><a class="level is-mobile" href="#POSIX-共享内存-POSIX-shared-memory"><span class="level-left"><span class="level-item">5.6</span><span class="level-item">POSIX 共享内存 POSIX shared memory</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#特点-7"><span class="level-left"><span class="level-item">5.6.1</span><span class="level-item">特点</span></span></a></li></ul></li></ul></li><li><a class="level is-mobile" href="#信号量-Semaphore"><span class="level-left"><span class="level-item">6</span><span class="level-item">信号量 Semaphore</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#POSIX-Semaphore"><span class="level-left"><span class="level-item">6.1</span><span class="level-item">POSIX Semaphore</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#匿名信号量-unnamed-semaphore"><span class="level-left"><span class="level-item">6.1.1</span><span class="level-item">匿名信号量 unnamed semaphore</span></span></a></li><li><a class="level is-mobile" href="#命名信号量-named-semaphnore"><span class="level-left"><span class="level-item">6.1.2</span><span class="level-item">命名信号量 named semaphnore</span></span></a></li></ul></li></ul></li><li><a class="level is-mobile" href="#套接字-Socket"><span class="level-left"><span class="level-item">7</span><span class="level-item">套接字 Socket</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#特点-8"><span class="level-left"><span class="level-item">7.1</span><span class="level-item">特点</span></span></a></li><li><a class="level is-mobile" href="#域-Domain"><span class="level-left"><span class="level-item">7.2</span><span class="level-item">域 Domain</span></span></a></li><li><a class="level is-mobile" href="#类型-Type"><span class="level-left"><span class="level-item">7.3</span><span class="level-item">类型 Type</span></span></a></li><li><a class="level is-mobile" href="#流式套接字-Steam-socket"><span class="level-left"><span class="level-item">7.4</span><span class="level-item">流式套接字 Steam socket</span></span></a></li><li><a class="level is-mobile" href="#数据报套接字-Datagram-socket"><span class="level-left"><span class="level-item">7.5</span><span class="level-item">数据报套接字 Datagram socket</span></span></a></li><li><a class="level is-mobile" href="#顺序报文套接字-Sequential-packet-socket"><span class="level-left"><span class="level-item">7.6</span><span class="level-item">顺序报文套接字 Sequential packet socket</span></span></a></li><li><a class="level is-mobile" href="#关于套接字的一些小知识"><span class="level-left"><span class="level-item">7.7</span><span class="level-item">关于套接字的一些小知识</span></span></a></li></ul></li><li><a class="level is-mobile" href="#附录：不同-IPC-的-ID-和句柄类型"><span class="level-left"><span class="level-item">8</span><span class="level-item">附录：不同 IPC 的 ID 和句柄类型</span></span></a></li><li><a class="level is-mobile" href="#附录：不同-IPC-的访问权限"><span class="level-left"><span class="level-item">9</span><span class="level-item">附录：不同 IPC 的访问权限</span></span></a></li><li><a class="level is-mobile" href="#附录：不同-IPC-的生命周期"><span class="level-left"><span class="level-item">10</span><span class="level-item">附录：不同 IPC 的生命周期</span></span></a></li><li><a class="level is-mobile" href="#参考"><span class="level-left"><span class="level-item">11</span><span class="level-item">参考</span></span></a></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/">BakaFT&#039;s blog</a><p class="is-size-7"><span>&copy; 2023 BakaFT</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p></div></div></div></div></footer><script src="https://fastly.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://fastly.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://fastly.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://fastly.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://fastly.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><div id="outdated"><h6>Your browser is out-of-date!</h6><p>Update your browser to view this website correctly.&amp;npsb;<a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p><p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p></div><script src="https://fastly.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script><script>window.addEventListener("load", function () {
+            outdatedBrowser({
+                bgColor: '#f25648',
+                color: '#ffffff',
+                lowerThan: 'object-fit' // display on IE11 or below
+            });
+        });</script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>

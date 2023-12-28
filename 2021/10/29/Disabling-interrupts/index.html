@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>Disabling interrupts - BakaFT&#039;s blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="BakaFT&#039;s blog"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="BakaFT&#039;s blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="Disabling InterruptsWhen SeaBIOS is loading in QEMU, it  will disable interrupts 1234567810 0xfd15f: cli                        11 0xfd160: cld            12 0xfd161: mov $0x8f, %eax# Here to disable"><meta property="og:type" content="blog"><meta property="og:title" content="Disabling interrupts"><meta property="og:url" content="https://bakaft.github.io/2021/10/29/Disabling-interrupts/"><meta property="og:site_name" content="BakaFT&#039;s blog"><meta property="og:description" content="Disabling InterruptsWhen SeaBIOS is loading in QEMU, it  will disable interrupts 1234567810 0xfd15f: cli                        11 0xfd160: cld            12 0xfd161: mov $0x8f, %eax# Here to disable"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://bakaft.github.io/img/og_image.png"><meta property="article:published_time" content="2021-10-29T17:09:30.000Z"><meta property="article:modified_time" content="2023-12-28T08:42:40.251Z"><meta property="article:author" content="BakaFT"><meta property="article:tag" content="OS"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://bakaft.github.io/2021/10/29/Disabling-interrupts/"},"headline":"Disabling interrupts","image":["https://bakaft.github.io/img/og_image.png"],"datePublished":"2021-10-29T17:09:30.000Z","dateModified":"2023-12-28T08:42:40.251Z","author":{"@type":"Person","name":"BakaFT"},"publisher":{"@type":"Organization","name":"BakaFT's blog","logo":{"@type":"ImageObject","url":{"text":"BakaFT's blog"}}},"description":"Disabling InterruptsWhen SeaBIOS is loading in QEMU, it  will disable interrupts 1234567810 0xfd15f: cli                        11 0xfd160: cld            12 0xfd161: mov $0x8f, %eax# Here to disable"}</script><link rel="canonical" href="https://bakaft.github.io/2021/10/29/Disabling-interrupts/"><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/5.12.0/css/all.min.css"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/highlight.js@9.12.0/styles/idea.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css"><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://fastly.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 6.2.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/">BakaFT&#039;s blog</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2021-10-29T17:09:30.000Z" title="10/29/2021, 5:09:30 PM">2021-10-29</time></span></div></div><h1 class="title is-3 is-size-4-mobile">Disabling interrupts</h1><div class="content"><h1 id="Disabling-Interrupts"><a href="#Disabling-Interrupts" class="headerlink" title="Disabling Interrupts"></a>Disabling Interrupts</h1><p>When SeaBIOS is loading in QEMU, it  will disable interrupts</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">10 0xfd15f: cli                        </span><br><span class="line">11 0xfd160: cld            </span><br><span class="line">12 0xfd161: mov $0x8f, %eax</span><br><span class="line"># Here to disable Maskable Hardware interrupts</span><br><span class="line"></span><br><span class="line">13 0xfd167: out %al, $0x70           </span><br><span class="line">14 0xfd169: in $0x71, %al</span><br><span class="line"># And disable Non-maskable Hardware interrupts</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<p>The #10 instruction <code>cli</code> above is to disable interrupts, but how it works?</p>
+<p>Interrupt is divided into <code>Hardware</code> and <code>Software</code> ones. For <code>Hardware interrupts</code>, there are <code>maskable</code> and <code>non-maskable</code> ones.</p>
+<p>On the FLAGS register of the CPU, bit 9 is IF (Interrupt flag),  who determines whether or not the CPU will respond immediately to <strong>maskable hardware</strong> interrupts.</p>
+<p>The instruction <code>cli</code> is to set IF to <code>0</code>  , so we can disable the <strong>maskable hardware</strong> interrupts. Instead, the instruction <code>sti</code> is to set IF to <code>1</code>, namely enable it.</p>
+<p>But as you see, non-maskable hardware interrupts <strong>can still be disabled</strong> at #13 , Why?</p>
+<blockquote>
+<p>From <a target="_blank" rel="noopener" href="https://wiki.osdev.org/Non_Maskable_Interrupt">Non Maskable Interrupt - OSDev Wiki</a>and <a target="_blank" rel="noopener" href="https://bochs.sourceforge.io/techspec/PORTS.LST">https://bochs.sourceforge.io/techspec/PORTS.LST</a></p>
+<p>We can know that the MSB of 0x70  is to control the NMI(Non Maskable Interrupt) and it’s shared with CMOS  RAM index</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">0070	w	CMOS RAM index register port (ISA, EISA)</span><br><span class="line">		 bit 7	 = 1  NMI disabled</span><br><span class="line">			 = 0  NMI enabled</span><br><span class="line">		 bit 6-0      CMOS RAM index (64 bytes, sometimes 128 bytes)</span><br><span class="line"></span><br><span class="line">		any write to 0070 should be followed by an action to 0071</span><br><span class="line">		or the RTC wil be left in an unknown state.</span><br></pre></td></tr></table></figure>
+
+<p>From OSDev Wiki, you can disable NMI like this</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">NMI_disable</span><span class="params">()</span> &#123;</span><br><span class="line">outb(<span class="number">0x70</span>, inb(<span class="number">0x70</span>) | <span class="number">0x80</span>);</span><br><span class="line">inb(<span class="number">0x71</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>So you read 0x70  using <code>inb</code> , and you get the binary value of it. Then make a Bool <code>OR</code> calculation:</p>
+<table>
+<thead>
+<tr>
+<th>var</th>
+<th>MSB</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th>LSB</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>inb(0x70)</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr>
+<td>0x80</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Result</td>
+<td>1</td>
+<td>?</td>
+<td>?</td>
+<td>?</td>
+<td>?</td>
+<td>?</td>
+<td>?</td>
+<td>?</td>
+</tr>
+</tbody></table>
+<p>Then you write the result to 0x70 again, whose MSB must be 1. So the NMI is now disabled.</p>
+<p>Vice versa, when enabling</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">NMI_enable</span><span class="params">()</span> &#123;</span><br><span class="line">outb(<span class="number">0x70</span>, inb(<span class="number">0x70</span>) &amp; <span class="number">0x7F</span>);</span><br><span class="line">inb(<span class="number">0x71</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The MSB of the result must be 0, so NMI will be enabled.</p>
+</blockquote>
+<p>Let’s use GDB to set a breakpoint before the <code>out</code> instruction executes</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">(gdb) b *0xfd167</span><br><span class="line">Breakpoint 1 at 0xfd167</span><br><span class="line">(gdb) c</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Program received signal SIGTRAP, Trace/breakpoint trap.</span><br><span class="line">[f000:d167]    0xfd167:	out    %al,$0x70</span><br><span class="line">0x0000d167 in ?? ()</span><br><span class="line">(gdb) info register al</span><br><span class="line">al             0x8f	-113</span><br></pre></td></tr></table></figure>
+
+<p>Now <code>%al</code> is <code>0x8f</code> or<code>1000 1111</code> and its MSB is <code>1</code> so NMI will be disabled after this instruction.</p>
+<p>Cuz the reference mentioned:</p>
+<blockquote>
+<p>any write to 0070 should be followed by an action to 0071<br>or the RTC wil be left in an unknown state</p>
+</blockquote>
+<p>That’s why next instruction(#14) is <code>0xfd169: in $0x71, %al</code></p>
+</div><div class="article-licensing box"><div class="licensing-title"><p>Disabling interrupts</p><p><a href="https://bakaft.github.io/2021/10/29/Disabling-interrupts/">https://bakaft.github.io/2021/10/29/Disabling-interrupts/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>BakaFT</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2021-10-29</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2023-12-28</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/OS/">OS</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2021/11/02/PC%E7%95%8C%E4%B8%AD%E6%8C%87%E4%BB%A4%E9%9B%86%E6%9E%B6%E6%9E%84%E7%9A%84%E7%A7%B0%E5%91%BC%E4%B8%8E%E5%8C%BA%E5%88%AB/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">PC界中指令集架构的称呼与区别</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2021/10/29/6-828-Lab1/"><span class="level-item">6.828-Lab1(old)</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><!--!--><div class="column column-right is-4-tablet is-4-desktop is-4-widescreen  order-3"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#Disabling-Interrupts"><span class="level-left"><span class="level-item">1</span><span class="level-item">Disabling Interrupts</span></span></a></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/">BakaFT&#039;s blog</a><p class="is-size-7"><span>&copy; 2023 BakaFT</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p></div></div></div></div></footer><script src="https://fastly.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://fastly.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://fastly.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://fastly.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://fastly.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><div id="outdated"><h6>Your browser is out-of-date!</h6><p>Update your browser to view this website correctly.&amp;npsb;<a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p><p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p></div><script src="https://fastly.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script><script>window.addEventListener("load", function () {
+            outdatedBrowser({
+                bgColor: '#f25648',
+                color: '#ffffff',
+                lowerThan: 'object-fit' // display on IE11 or below
+            });
+        });</script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>

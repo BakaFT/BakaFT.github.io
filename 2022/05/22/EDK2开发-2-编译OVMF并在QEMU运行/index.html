@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>EDK2开发(2)-编译OVMF并在QEMU运行 - BakaFT&#039;s blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="BakaFT&#039;s blog"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="BakaFT&#039;s blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="本文参考我们接下来根据这个教程进行：OVMF · tianocore&amp;#x2F;tianocore.github.io Wiki"><meta property="og:type" content="blog"><meta property="og:title" content="EDK2开发(2)-编译OVMF并在QEMU运行"><meta property="og:url" content="https://bakaft.github.io/2022/05/22/EDK2%E5%BC%80%E5%8F%91-2-%E7%BC%96%E8%AF%91OVMF%E5%B9%B6%E5%9C%A8QEMU%E8%BF%90%E8%A1%8C/"><meta property="og:site_name" content="BakaFT&#039;s blog"><meta property="og:description" content="本文参考我们接下来根据这个教程进行：OVMF · tianocore&amp;#x2F;tianocore.github.io Wiki"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://bakaft.github.io/img/og_image.png"><meta property="article:published_time" content="2022-05-22T11:43:42.000Z"><meta property="article:modified_time" content="2023-12-28T08:42:40.251Z"><meta property="article:author" content="BakaFT"><meta property="article:tag" content="UEFI"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://bakaft.github.io/2022/05/22/EDK2%E5%BC%80%E5%8F%91-2-%E7%BC%96%E8%AF%91OVMF%E5%B9%B6%E5%9C%A8QEMU%E8%BF%90%E8%A1%8C/"},"headline":"EDK2开发(2)-编译OVMF并在QEMU运行","image":["https://bakaft.github.io/img/og_image.png"],"datePublished":"2022-05-22T11:43:42.000Z","dateModified":"2023-12-28T08:42:40.251Z","author":{"@type":"Person","name":"BakaFT"},"publisher":{"@type":"Organization","name":"BakaFT's blog","logo":{"@type":"ImageObject","url":{"text":"BakaFT's blog"}}},"description":"本文参考我们接下来根据这个教程进行：OVMF · tianocore&#x2F;tianocore.github.io Wiki"}</script><link rel="canonical" href="https://bakaft.github.io/2022/05/22/EDK2%E5%BC%80%E5%8F%91-2-%E7%BC%96%E8%AF%91OVMF%E5%B9%B6%E5%9C%A8QEMU%E8%BF%90%E8%A1%8C/"><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/5.12.0/css/all.min.css"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/highlight.js@9.12.0/styles/idea.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css"><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://fastly.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 6.2.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/">BakaFT&#039;s blog</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2022-05-22T11:43:42.000Z" title="5/22/2022, 11:43:42 AM">2022-05-22</time></span></div></div><h1 class="title is-3 is-size-4-mobile">EDK2开发(2)-编译OVMF并在QEMU运行</h1><div class="content"><h1 id="本文参考"><a href="#本文参考" class="headerlink" title="本文参考"></a>本文参考</h1><p>我们接下来根据这个教程进行：<a target="_blank" rel="noopener" href="https://github.com/tianocore/tianocore.github.io/wiki/OVMF">OVMF · tianocore&#x2F;tianocore.github.io Wiki</a></p>
+<span id="more"></span>
+
+<h1 id="What-is-OVMF"><a href="#What-is-OVMF" class="headerlink" title="What is OVMF"></a>What is OVMF</h1><p>OVMF is an <a target="_blank" rel="noopener" href="https://github.com/tianocore/tianocore.github.io/wiki/EDK-II">EDK II</a> based project to enable <a target="_blank" rel="noopener" href="https://github.com/tianocore/tianocore.github.io/wiki/UEFI">UEFI</a> support for Virtual Machines. OVMF contains sample UEFI firmware for <a target="_blank" rel="noopener" href="http://www.qemu-project.org/">QEMU</a> and <a target="_blank" rel="noopener" href="http://www.linux-kvm.org/">KVM</a></p>
+<p>OVMF 可以跑在虚拟机上，并为其提供 UEFI 支持，还有简单的 UEFI Shell 实现</p>
+<h1 id="编译-OVMF"><a href="#编译-OVMF" class="headerlink" title="编译 OVMF"></a>编译 OVMF</h1><p>和上一次构建 HelloWorld 的时候一样，编辑<code>$CONF_PATH/target.txt</code></p>
+<p>EDK2 提供了多种选择：</p>
+<table>
+<thead>
+<tr>
+<th>ACTIVE_PLATFORM</th>
+<th>TARGET_ARCH</th>
+<th>PEI code</th>
+<th>DXE&#x2F;UEFI code</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>OvmfPkg&#x2F;OvmfPkgIa32.dsc</td>
+<td>IA32</td>
+<td>IA32</td>
+<td>IA32</td>
+</tr>
+<tr>
+<td>OvmfPkg&#x2F;OvmfPkgIa32X64.dsc</td>
+<td>IA32 X64</td>
+<td>IA32</td>
+<td>X64</td>
+</tr>
+<tr>
+<td>OvmfPkg&#x2F;OvmfPkgX64.dsc</td>
+<td>X64</td>
+<td>X64</td>
+<td>X64</td>
+</tr>
+</tbody></table>
+<p>跟随教程，接下来我选择：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ACTIVE_PLATFORM       = OvmfPkg/OvmfPkgX64.dsc</span><br><span class="line">TARGET_ARCH           = X64</span><br><span class="line">TOOL_CHAIN_TAG        = GCC5</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">build</span><br></pre></td></tr></table></figure>
+
+<p>然后你就可以找到编译目标<code>$WORKSPACE/Build/OvmfX64/DEBUG_GCC5/FV/OVMF.fd</code></p>
+<h2 id="另一种编译方法"><a href="#另一种编译方法" class="headerlink" title="另一种编译方法"></a>另一种编译方法</h2><p>脱离<code>target.txt</code>进行编译</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">build -a X64 -t GCC5 -p OvmfPkg/OvmfPkgX64.dsc -b DEBUG</span><br></pre></td></tr></table></figure>
+
+<h1 id="虚拟机中运行"><a href="#虚拟机中运行" class="headerlink" title="虚拟机中运行"></a>虚拟机中运行</h1><h2 id="安装-QEMU"><a href="#安装-QEMU" class="headerlink" title="安装 QEMU"></a>安装 QEMU</h2><p>实体机还是算了 8</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install qemu</span><br><span class="line">sudo apt install qemu-system</span><br></pre></td></tr></table></figure>
+
+<h2 id="运行-QEMU"><a href="#运行-QEMU" class="headerlink" title="运行 QEMU"></a>运行 QEMU</h2><p>把镜像拷过来</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bakaft@BakaFT-PC:~$ <span class="built_in">mkdir</span> ~/run-ovmf</span><br><span class="line">bakaft@BakaFT-PC:~$ <span class="built_in">cd</span> ~/run-ovmf/</span><br><span class="line">bakaft@BakaFT-PC:~/run-ovmf$ <span class="built_in">cp</span> ~/edk2/Build/OvmfX64/DEBUG_GCC5/FV/OVMF.fd bios.bin</span><br></pre></td></tr></table></figure>
+<p>新建一个目录用于当作 UEFI Shell 的文件系统</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bakaft@BakaFT-PC:~/run-ovmf$ <span class="built_in">mkdir</span> hda-contents</span><br></pre></td></tr></table></figure>
+<p>然后运行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bakaft@BakaFT-PC:~/run-ovmf$ qemu-system-x86_64 -L . -pflash bios.bin -nographic  -net none --hda fat:rw:hda-contents</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>使用<code>-net none</code>跳过网络启动</p>
+</li>
+<li><p>使用<code>-nographic</code>使 qemu 直接从命令行输出而不是输出到窗口服务器（除非你的 WSL2 实例有窗口服务器，不然不加这个参数会报错）</p>
+</li>
+<li><p>使用<code>--hda</code>参数挂载本地文件夹作为文件系统功能</p>
+</li>
+</ul>
+<p>接下来就进入了 qemu，并且随后立刻启动到 UEFI Shell</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">UEFI Interactive Shell v2.2</span><br><span class="line">EDK II</span><br><span class="line">UEFI v2.70 (EDK II, 0x00010000)</span><br><span class="line">Mapping table</span><br><span class="line">      FS0: Alias(s):HD0a1:;BLK1:</span><br><span class="line">          PciRoot(0x0)/Pci(0x1,0x1)/Ata(0x0)/HD(1,MBR,0xBE1AFDFA,0x3F,0xFBFC1)</span><br><span class="line">     BLK0: Alias(s):</span><br><span class="line">          PciRoot(0x0)/Pci(0x1,0x1)/Ata(0x0)</span><br><span class="line">     BLK2: Alias(s):</span><br><span class="line">          PciRoot(0x0)/Pci(0x1,0x1)/Ata(0x0)</span><br><span class="line">Press ESC in 1 seconds to skip startup.nsh or any other key to continue.</span><br><span class="line"><span class="meta prompt_">Shell&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>呃呃。。退格键都不能用的。。</p>
+<h2 id="退出-QEMU"><a href="#退出-QEMU" class="headerlink" title="退出 QEMU"></a>退出 QEMU</h2><p>不想玩了可以<code>Ctrl-A X</code>退出 QEMU，这个操作是指：</p>
+<ol>
+<li>先按住<code>Ctrl</code>+<code>A</code>（同时，或者先后按)</li>
+<li>松开你的手</li>
+<li>按一下<code>X</code></li>
+</ol>
+</div><div class="article-licensing box"><div class="licensing-title"><p>EDK2开发(2)-编译OVMF并在QEMU运行</p><p><a href="https://bakaft.github.io/2022/05/22/EDK2开发-2-编译OVMF并在QEMU运行/">https://bakaft.github.io/2022/05/22/EDK2开发-2-编译OVMF并在QEMU运行/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>BakaFT</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2022-05-22</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2023-12-28</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/UEFI/">UEFI</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2022/05/22/EDK2%E5%BC%80%E5%8F%91-3-Hello-World/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">EDK2开发(3)-Hello World</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2022/05/22/EDK2%E5%BC%80%E5%8F%91-1-Ubuntu%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"><span class="level-item">EDK2开发(1)-Ubuntu开发环境搭建</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><!--!--><div class="column column-right is-4-tablet is-4-desktop is-4-widescreen  order-3"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#本文参考"><span class="level-left"><span class="level-item">1</span><span class="level-item">本文参考</span></span></a></li><li><a class="level is-mobile" href="#What-is-OVMF"><span class="level-left"><span class="level-item">2</span><span class="level-item">What is OVMF</span></span></a></li><li><a class="level is-mobile" href="#编译-OVMF"><span class="level-left"><span class="level-item">3</span><span class="level-item">编译 OVMF</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#另一种编译方法"><span class="level-left"><span class="level-item">3.1</span><span class="level-item">另一种编译方法</span></span></a></li></ul></li><li><a class="level is-mobile" href="#虚拟机中运行"><span class="level-left"><span class="level-item">4</span><span class="level-item">虚拟机中运行</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#安装-QEMU"><span class="level-left"><span class="level-item">4.1</span><span class="level-item">安装 QEMU</span></span></a></li><li><a class="level is-mobile" href="#运行-QEMU"><span class="level-left"><span class="level-item">4.2</span><span class="level-item">运行 QEMU</span></span></a></li><li><a class="level is-mobile" href="#退出-QEMU"><span class="level-left"><span class="level-item">4.3</span><span class="level-item">退出 QEMU</span></span></a></li></ul></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/">BakaFT&#039;s blog</a><p class="is-size-7"><span>&copy; 2023 BakaFT</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p></div></div></div></div></footer><script src="https://fastly.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://fastly.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://fastly.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://fastly.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://fastly.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><div id="outdated"><h6>Your browser is out-of-date!</h6><p>Update your browser to view this website correctly.&amp;npsb;<a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p><p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p></div><script src="https://fastly.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script><script>window.addEventListener("load", function () {
+            outdatedBrowser({
+                bgColor: '#f25648',
+                color: '#ffffff',
+                lowerThan: 'object-fit' // display on IE11 or below
+            });
+        });</script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>

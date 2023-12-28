@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>Hackintiosh on HASEE_ZX6_CT5DA - BakaFT&#039;s blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="BakaFT&#039;s blog"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="BakaFT&#039;s blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="缘起几年前还在初中的时候就听说过 Hackintosh 这种东西，不过因为当时什么也不懂，也就没去搞。 现在在大学天天码代码，Windows 的分区被各种开发环境，开发依赖还有日用的软件文档塞满，分区天天都是红色的看着有点难受，用着也麻烦。 还有，iTunes 在 Windows 的表现太差了，这也是我想试试 Mac 的原因之一。 所以萌生了黑苹果双系统的想法： Windows10 作为日用办公游"><meta property="og:type" content="blog"><meta property="og:title" content="Hackintiosh on HASEE_ZX6_CT5DA"><meta property="og:url" content="https://bakaft.github.io/2021/04/24/Hackintiosh-on-HASEE-ZX6-CT5DA/"><meta property="og:site_name" content="BakaFT&#039;s blog"><meta property="og:description" content="缘起几年前还在初中的时候就听说过 Hackintosh 这种东西，不过因为当时什么也不懂，也就没去搞。 现在在大学天天码代码，Windows 的分区被各种开发环境，开发依赖还有日用的软件文档塞满，分区天天都是红色的看着有点难受，用着也麻烦。 还有，iTunes 在 Windows 的表现太差了，这也是我想试试 Mac 的原因之一。 所以萌生了黑苹果双系统的想法： Windows10 作为日用办公游"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://bakaft.github.io/img/og_image.png"><meta property="article:published_time" content="2021-04-24T14:11:40.000Z"><meta property="article:modified_time" content="2023-12-28T08:42:40.251Z"><meta property="article:author" content="BakaFT"><meta property="article:tag" content="Hackintosh"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://bakaft.github.io/2021/04/24/Hackintiosh-on-HASEE-ZX6-CT5DA/"},"headline":"Hackintiosh on HASEE_ZX6_CT5DA","image":["https://bakaft.github.io/img/og_image.png"],"datePublished":"2021-04-24T14:11:40.000Z","dateModified":"2023-12-28T08:42:40.251Z","author":{"@type":"Person","name":"BakaFT"},"publisher":{"@type":"Organization","name":"BakaFT's blog","logo":{"@type":"ImageObject","url":{"text":"BakaFT's blog"}}},"description":"缘起几年前还在初中的时候就听说过 Hackintosh 这种东西，不过因为当时什么也不懂，也就没去搞。 现在在大学天天码代码，Windows 的分区被各种开发环境，开发依赖还有日用的软件文档塞满，分区天天都是红色的看着有点难受，用着也麻烦。 还有，iTunes 在 Windows 的表现太差了，这也是我想试试 Mac 的原因之一。 所以萌生了黑苹果双系统的想法： Windows10 作为日用办公游"}</script><link rel="canonical" href="https://bakaft.github.io/2021/04/24/Hackintiosh-on-HASEE-ZX6-CT5DA/"><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/5.12.0/css/all.min.css"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/highlight.js@9.12.0/styles/idea.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css"><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://fastly.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 6.2.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/">BakaFT&#039;s blog</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2021-04-24T14:11:40.000Z" title="4/24/2021, 2:11:40 PM">2021-04-24</time></span></div></div><h1 class="title is-3 is-size-4-mobile">Hackintiosh on HASEE_ZX6_CT5DA</h1><div class="content"><h1 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h1><p>几年前还在初中的时候就听说过 Hackintosh 这种东西，不过因为当时什么也不懂，也就没去搞。</p>
+<p>现在在大学天天码代码，Windows 的分区被各种开发环境，开发依赖还有日用的软件文档塞满，分区天天都是红色的看着有点难受，用着也麻烦。</p>
+<p>还有，iTunes 在 Windows 的表现太差了，这也是我想试试 Mac 的原因之一。</p>
+<p>所以萌生了黑苹果双系统的想法：</p>
+<p>Windows10 作为日用办公游戏，或者要求比较特别的软件运行的环境</p>
+<p>MacOS 作为平时的开发环境</p>
+<p>开搞</p>
+<span id="more"></span>
+<h1 id="双系统安装"><a href="#双系统安装" class="headerlink" title="双系统安装"></a>双系统安装</h1><p><strong>注意！本文默认读者对黑苹果的安装基础，包括<code>EFI</code>,<code>ESP</code>,<code>UEFI</code>等概念等有一定了解</strong></p>
+<h2 id="硬件环境"><a href="#硬件环境" class="headerlink" title="硬件环境"></a>硬件环境</h2><p>2019 年购入的<code>Hasee ZX6-CT5DA</code>，模具为<code>Clevo NB50TA</code>, 我这台 BIOS 中识别为<code>NBxxTA</code></p>
+<p>32G <code>USB2.0</code> U 盘一个，用于刻录<code>PE</code>以及<code>Mac</code>镜像</p>
+<h3 id="硬件改动"><a href="#硬件改动" class="headerlink" title="硬件改动"></a>硬件改动</h3><h4 id="网卡"><a href="#网卡" class="headerlink" title="网卡"></a>网卡</h4><p>由原机的<code>AC9462NGW</code>更换为<code>AC9560NGW</code></p>
+<h4 id="硬盘"><a href="#硬盘" class="headerlink" title="硬盘"></a>硬盘</h4><p>预留 M.2 位添加一块<code>WD SN550 500GB</code></p>
+<h2 id="分区规划"><a href="#分区规划" class="headerlink" title="分区规划"></a>分区规划</h2><p><code>Phison SATA SSD</code>: 自带 SATA SSD，全盘用于存储数据</p>
+<p><code>WDC WDS500G</code>: SN550，150G(Window10 标准)分给 Windows，150G(Windows10 标准) 给 Mac Big Sur，剩下保持未分配，装完 Mac 后再操作</p>
+<p>注意:</p>
+<p>Windows 与 Mac 对储存空间大小的进制定义有区分，<code>Windows10</code>目前仍定义<code>1KByte</code>&#x3D;<code>1024 Bytes</code> ，而 Mac 和大部分 Linux 发行版则与硬盘厂商说法统一，定义<code>1KByte</code>&#x3D;<code>1000 Bytes</code>，语义上也符合<code>Kilo</code>的含义</p>
+<p>所以我的 SN550 在 Mac 下显示大小为<code>500.11GB</code>，而在 Windows 下则远小于<code>500GB</code></p>
+<p>我使用<code>WindowsPE</code>环境安装<code>Windows10</code>，所以给 Windows10 划分<code>150GB</code>时采用的是<code>Windows</code>给出的定义，这个大小在 Mac 中显示为<code>160.45 GB</code> ，考虑误差等因素存在，所以不符合 1000&#x2F;1024 的比例</p>
+<h2 id="全新安装-Windows10"><a href="#全新安装-Windows10" class="headerlink" title="全新安装 Windows10"></a>全新安装 Windows10</h2><p><code>Windows镜像</code>: 本人从<code>Latest10.win</code>下载 21H1 镜像   <a target="_blank" rel="noopener" href="https://latest10.win/get.html">点击此处前往下载页面 | Latest10@WhatK</a></p>
+<p><code>WindowsPE</code>：此处本人使用 <a target="_blank" rel="noopener" href="https://firpe.cn/">FirPE Project – 也许是最适合年轻人使用的 WinPE 系统~</a></p>
+<p>装个 Windows10 不是有手就行？</p>
+<p>使用 FirPE 官方刻录工具为 U 盘格式化刻入 PE 镜像，并通过 UEFI 引导进入 PE**(神舟开机按 F7 选择 UEFI 启动项)**</p>
+<p>使用<code>DiskGenius</code>创建<code>ESP</code>以及<code>MSR</code>分区，其中<code>EFI</code>大小一定要大于<code>200MB</code>,不然后期黑苹果引导会出问题</p>
+<p>在 PE 通过磁盘管理工具为 Windows10 准备 150G 的空间</p>
+<p>直接通过资源管理器挂载 ISO 镜像，打开<code>setup.exe</code>进行安装，选择准备好的分区，写入，等待自动重启</p>
+<p>重启后默认通过<code>Windows Bootmgr</code>进入第二段安装过程，U 盘拔了干就完了</p>
+<p>进入 Windows10 后打开<code>DiskGenius</code>，你会发现。。有俩 ESP 分区，因为微软自己又创建了一个<code>100MB</code>的，把小的这个删掉，然后使用<code>Dism++</code>修复引导即可（或者直接把文件复制到之前自己新建的 ESP 分区然后删除微软的 ESP 分区应该也没问题）</p>
+<p><strong>在 Windows 的分区下放置<code>Hackintool</code>和<code>Opencore configurator</code>的包,后续会用到</strong></p>
+<h2 id="安装-MacOS-Big-Sur"><a href="#安装-MacOS-Big-Sur" class="headerlink" title="安装 MacOS Big Sur"></a>安装 MacOS Big Sur</h2><p><code>镜像</code>: 本人使用 <a target="_blank" rel="noopener" href="https://shuiyunxc.gitee.io/2020/12/15/20C69/index/">macOS Big Sur 11.1 (20C69)-正式版原版镜像 By OpenCore-0.6.4-12 月 08 日正式版 | 独行秀才的老窝 (gitee.io)</a></p>
+<p><code>EFI</code>: 本人使用 <a target="_blank" rel="noopener" href="https://github.com/VergeDX/Hackintosh_HASEE_ZX6-CT5DA">GitHub - VergeDX&#x2F;Hackintosh_HASEE_ZX6-CT5DA: macOS Big Sur for Hasee ZX6-CT5DA.</a></p>
+<p><code>BIOS</code>: 感谢 EFI 仓库作者@Vanilla 提供的参考</p>
+<blockquote>
+<p>我没有刷解锁 BIOS，目前所有的设置都是默认的。</p>
+</blockquote>
+<p><strong>注意！此处使用 USB2.0 的 U 盘，并选择插入 USB2.0(即机身右侧，非蓝色的 USB 口)，避免出现卡在<code>HID: Leagcy.....</code></strong></p>
+<p><strong>注意！不要联网，保持断网安装</strong></p>
+<p>相信聪明的你已经装完驱动了，来，打开磁盘管理工具继续操作</p>
+<p>为 Mac 划分一个适合大小的分区，并选择<code>不格式化，不分配盘符</code>, 此处我分配<code>150GB</code></p>
+<p>使用<code>Etcher</code>向 U 盘格式化刻入下载好的镜像，刷写完毕后别急，打开<code>DiskGenius</code> ，替换<code>EFI</code>，完事</p>
+<p>重启，在 UEFI 启动项中选择 U 盘，可进入<code>OpenCore</code>界面，选择<code>Install Big Sur</code></p>
+<p>静心等待，读取完毕后会进入安装界面，选择磁盘工具</p>
+<p>调整选项到<code>显示所有设备</code>，可以看到目前的硬盘目录结构，选择给 Mac 准备好的野生分区，右键抹掉，选择<code>AFPS</code>，抹掉即可</p>
+<p>如果你和我一样是全新安装，你会注意到，抹出来的<code>容器</code>是除了<code>Windows10</code>分区以外所有空间大小，而不是说好的<code>150GB</code></p>
+<p><strong>简单来说，没问题，后期装好 Mac 可以重新让原来那块空间回来</strong></p>
+<p>别慌，装就完事了，退出磁盘工具，选择<code>安装Mac Big Sur</code>, 等半小时就行了，无聊的可以看看安装器日志，时不时晃下鼠标防止睡眠，等待安装器自动重启</p>
+<p>重启后继续手动选择 U 盘 UEFI 启动，此时会出现你之前抹掉时给分区起的名字，选择它，继续启动</p>
+<p>不出意外你就会看到 Big Sur 的安装配置界面，一路照常配置，让你联网的时候选择这台机器不接入互联网，配置完毕后即可进入 Mac 桌面。</p>
+<p><strong>当前阶段，注意一定一定不要登录任何 iCloud 账户获 Apple 账户</strong></p>
+<p><strong>当前阶段，注意一定一定不要登录任何 iCloud 账户获 Apple 账户</strong></p>
+<p>因为还没更改三码</p>
+<p>打开终端执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo spctl --master-disable // 允许安装所有来源的应用，为了能打开后续的俩工具</span><br></pre></td></tr></table></figure>
+
+<h3 id="刷新三码"><a href="#刷新三码" class="headerlink" title="刷新三码"></a>刷新三码</h3><p>简单来说就是 Mac 的序列号，白苹果人家自己带就不说了，使用<code>Opencore</code>引导的黑苹果，这个数据存在<code>config.plist</code>里，如果要是联网查询重复的话，可能会出现一些问题，严重的<strong>封禁 iCloud 账户</strong></p>
+<p><strong>因为 Github 的作者提供的 EFI 中已经存在一个三码，所以我们需要换一个</strong></p>
+<p>执行完上面的命令后，打开 Finder, 进入 Windows 的分区找到<code>HackinTool</code>，打开，在<code>磁盘</code>选项卡分别挂载挂载 U 盘和 SSD 的<code>ESP</code>分区，将 U 盘的 EFI 文件复制到桌面</p>
+<p>打开<code>Opencore configurator</code>并载入拷出来的<code>config.plist</code>，左侧选择<code>PlatformInfo-机型平台设置</code>, 右侧选择<code>Datahub-generic-PlatformNVRAM</code>选项卡，点击<code>检查序列号有效性</code>的<strong>右边</strong>的箭头，选择<code>MacBookPro 15,1</code>开头的，注意这时候会出现一大堆信息，其中包括刚刚生成的三码，如果再次选择，会再次生成刷新三码信息，</p>
+<p>怎么看有没有用呢？点检查序列号有效性，会自动打开苹果的查询页面，如果有保修，说明这个序列号已经存在并被用于白苹果了，这个序列号用不了，再生成一个。</p>
+<p>如果查询结果说序列号无效，说明这没人用过，就可以保存文件了。</p>
+<p>现在把你的 EFI 中的<code>OC</code>和<code>BOOT</code>文件夹复制到<code>SSD</code>的 ESP 分区，<code>BOOT</code>文件夹可以覆盖 Windows 的。</p>
+<p>这样你的<code>UEFI分区</code>目前同时存在<code>Windows Boot manager</code>和<code>OpenCore</code>，再去 Windows 设置 UEFI 启动项默认为<code>Opencore</code>即可</p>
+<p>以后系统引导遵循下列顺序</p>
+<p>Windows10: UEFI -&gt; Opencore -&gt; Windows Boot manager -&gt; Windows10</p>
+<p>Mac : UEFI -&gt; OpenCore -&gt; Big Sur</p>
+<h2 id="安装-Catalina"><a href="#安装-Catalina" class="headerlink" title="安装 Catalina"></a>安装 Catalina</h2><p>本人已测试镜像与 EFI 搭配可用</p>
+<p>大致与 Big Sur 相似，此处感谢<a target="_blank" rel="noopener" href="https://blog.luojiasan.com/">@Lsansan</a> 的<a target="_blank" rel="noopener" href="https://blog.luojiasan.com/category/221.html">安装教程</a> 以及博主给出的 BIOS 设定参考：</p>
+<blockquote>
+<p>我的本本 bios 系统是 insyde，我没见过，也没用过。安装黑苹果，bios 也没有特意设置过什么，仅仅通过 bios 设置引导而已。</p>
+</blockquote>
+<p>镜像:  macOS Catalina 10.15.6 19G2021@黑果小兵</p>
+<p>EFI:  见参考博文</p>
+<h1 id="系统优化"><a href="#系统优化" class="headerlink" title="系统优化"></a>系统优化</h1><h2 id="之前的分区问题"><a href="#之前的分区问题" class="headerlink" title="之前的分区问题"></a>之前的分区问题</h2><p>在安装 Big sur 抹分区的时候，Mac 默认把所有除 Windows 分区外的部分抹成了一个<code>APFS容器</code></p>
+<p>你可以对这个容器进行再分块操作，分为多个宗卷，也就是分区。</p>
+<p>而 Mac 安装则是在容器创建了 5 个宗卷，用于系统的各个部分</p>
+<p>这么说，其实之前在 Windows10 分给 Mac 空间时的数字毫无意义</p>
+<p>但是！苹果说 APFS 容器是很灵活的，可以通过磁盘工具割回来一些空间用！</p>
+<p>打开磁盘工具，选择容器，点分区，选择 Big Sur 的分区，讲分区大小更改为更小的值，系统就会切割出对应差值大小的空间出来，而这个空间，是可以被赋予各个格式的。</p>
+<p>比如我原先 Big Sur 占了 380G，我手动更改为 150G，那么应用更改后系统会腾出 230G 的空间给我，我可以任意格式化，之后我选择使用它作为”交换分区”</p>
+<h2 id="创建一个”交换分区”"><a href="#创建一个”交换分区”" class="headerlink" title="创建一个”交换分区”"></a>创建一个”交换分区”</h2><p>双系统有的时候挺尴尬的</p>
+<p>我 Windows 读不了 APFS，Mac 对 NTFS 的操作是只能读不能写，要是有两个系统都要用的文件那岂不是很麻烦？</p>
+<p>比如 Hexo 博客文件，我在两个系统里都有写博客的可能，所以需要一个解决方案。</p>
+<p>可以考虑使用<code>exFat</code>格式，Windows 和 Mac 都支持，用它就可以实现文件在双系统下的读写</p>
+<h2 id="HiDpi"><a href="#HiDpi" class="headerlink" title="HiDpi"></a>HiDpi</h2><p>1080p 的屏幕，默认只有三档分辨率可以选，体验只能说太拉了</p>
+<p>所以使用脚本开启 HiDpi，并提供多档缩放设定</p>
+<p><a target="_blank" rel="noopener" href="https://zhih.me/one-key-hidpi/">一键开启 macOS HiDPI | 底噪 (zhih.me)</a></p>
+<p>脚本里有好几个 1080p，我选的第一个，可用</p>
+<p>只能说屏幕清晰多了</p>
+<p><strong>注意！本人测试这个脚本对外接显示屏(1080p)无效，如需设置外接显示屏 HiDpi 可能需要用到 DRM，相关教程请自行查询</strong></p>
+<p><strong>更新外屏开启 HiDpi:</strong></p>
+<p>首先在恢复模式中使用终端关闭 SIP</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">csrutil <span class="built_in">disable</span></span><br><span class="line">csrutil authenticated-root <span class="built_in">disable</span> //这个也要关不然无法创建snapshot</span><br></pre></td></tr></table></figure>
+
+<p>制作显示屏 Plist 文件，参考<a target="_blank" rel="noopener" href="https://sspai.com/post/57549">为 macOS 10.15 开启 HiDPI，让 2K 显示器更舒适 - 少数派 (sspai.com)</a></p>
+<p>由于 Big sur 的特殊机制，即使关闭 SIP 仍然无法挂载根目录<code>/</code>，采用以下解决办法:</p>
+<p>使用 diskutil 查询系统根目录在哪里</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;diskutil list</span><br><span class="line">/dev/disk2 (synthesized):</span><br><span class="line">   <span class="comment">#:                       TYPE NAME                    SIZE       IDENTIFIER</span></span><br><span class="line">   0:      APFS Container Scheme -                      +150.0 GB   disk2</span><br><span class="line">                                 Physical Store disk0s5</span><br><span class="line">   1:                APFS Volume ⁨BigSur - 数据⁩           43.4 GB    disk2s1</span><br><span class="line">   2:                APFS Volume ⁨Preboot⁩                 293.7 MB   disk2s2</span><br><span class="line">   3:                APFS Volume ⁨Recovery⁩                610.7 MB   disk2s3</span><br><span class="line">   4:                APFS Volume ⁨VM⁩                      1.1 MB     disk2s4</span><br><span class="line">   5:                APFS Volume ⁨BigSur⁩                  15.0 GB    disk2s5</span><br></pre></td></tr></table></figure>
+
+<p>可以看到我的在<code>disk2s5</code>，然后执行如下命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mount -o nobrowse -t apfs /dev/disk2s5 /Users/bakaft/tomount</span><br></pre></td></tr></table></figure>
+
+<p>其中这个<code>tomount</code>目录可以是任意具有读写权限的目录，可以像我一样直接在用户目录下新建一个文件夹</p>
+<p>执行完之后，这个目录将被软链接到<code>/</code>，也就是说会这样</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;<span class="built_in">pwd</span></span><br><span class="line">/User/bakaft/tomount</span><br><span class="line">&gt;&gt;<span class="built_in">ls</span></span><br><span class="line">Applications	System		Volumes		cores		etc		opt		sbin		usr</span><br><span class="line">Library		Users		bin		dev		home		private		tmp		var</span><br></pre></td></tr></table></figure>
+
+<p>后续就可以对<code>/</code>进行读写操作了，复制完之后重建 Snapshot，不然更改无效</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo bless --folder /Users/bakaft/tomount/System/Library/CoreServices --bootefi --create-snapshot</span><br></pre></td></tr></table></figure>
+
+<p>然后重启即可，目录会自动取消挂载。</p>
+<h2 id="双系统时间问题"><a href="#双系统时间问题" class="headerlink" title="双系统时间问题"></a>双系统时间问题</h2><p>Windows 命令行执行:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Reg add HKLM\SYSTEM\CurrentControlSet\Control\TimeZoneInformation /v RealTimeIsUniversal /t REG_DWORD /d 1</span><br></pre></td></tr></table></figure>
+
+
+
+</div><div class="article-licensing box"><div class="licensing-title"><p>Hackintiosh on HASEE_ZX6_CT5DA</p><p><a href="https://bakaft.github.io/2021/04/24/Hackintiosh-on-HASEE-ZX6-CT5DA/">https://bakaft.github.io/2021/04/24/Hackintiosh-on-HASEE-ZX6-CT5DA/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>BakaFT</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2021-04-24</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2023-12-28</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/Hackintosh/">Hackintosh</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2021/05/24/Zsh%E4%B8%8B%E7%A8%8B%E5%BA%8F%E8%BE%93%E5%87%BA%E5%90%8E%E5%87%BA%E7%8E%B0%E8%AF%A1%E5%BC%82%E7%9A%84%E7%99%BE%E5%88%86%E5%8F%B7%E5%88%86%E6%9E%90/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">Zsh下程序输出后出现诡异的百分号分析</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2021/04/20/Scrapy-deepcopy/"><span class="level-item">Scrapy deepcopy</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><!--!--><div class="column column-right is-4-tablet is-4-desktop is-4-widescreen  order-3"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#缘起"><span class="level-left"><span class="level-item">1</span><span class="level-item">缘起</span></span></a></li><li><a class="level is-mobile" href="#双系统安装"><span class="level-left"><span class="level-item">2</span><span class="level-item">双系统安装</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#硬件环境"><span class="level-left"><span class="level-item">2.1</span><span class="level-item">硬件环境</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#硬件改动"><span class="level-left"><span class="level-item">2.1.1</span><span class="level-item">硬件改动</span></span></a></li></ul></li><li><a class="level is-mobile" href="#分区规划"><span class="level-left"><span class="level-item">2.2</span><span class="level-item">分区规划</span></span></a></li><li><a class="level is-mobile" href="#全新安装-Windows10"><span class="level-left"><span class="level-item">2.3</span><span class="level-item">全新安装 Windows10</span></span></a></li><li><a class="level is-mobile" href="#安装-MacOS-Big-Sur"><span class="level-left"><span class="level-item">2.4</span><span class="level-item">安装 MacOS Big Sur</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#刷新三码"><span class="level-left"><span class="level-item">2.4.1</span><span class="level-item">刷新三码</span></span></a></li></ul></li><li><a class="level is-mobile" href="#安装-Catalina"><span class="level-left"><span class="level-item">2.5</span><span class="level-item">安装 Catalina</span></span></a></li></ul></li><li><a class="level is-mobile" href="#系统优化"><span class="level-left"><span class="level-item">3</span><span class="level-item">系统优化</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#之前的分区问题"><span class="level-left"><span class="level-item">3.1</span><span class="level-item">之前的分区问题</span></span></a></li><li><a class="level is-mobile" href="#创建一个”交换分区”"><span class="level-left"><span class="level-item">3.2</span><span class="level-item">创建一个”交换分区”</span></span></a></li><li><a class="level is-mobile" href="#HiDpi"><span class="level-left"><span class="level-item">3.3</span><span class="level-item">HiDpi</span></span></a></li><li><a class="level is-mobile" href="#双系统时间问题"><span class="level-left"><span class="level-item">3.4</span><span class="level-item">双系统时间问题</span></span></a></li></ul></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/">BakaFT&#039;s blog</a><p class="is-size-7"><span>&copy; 2023 BakaFT</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p></div></div></div></div></footer><script src="https://fastly.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://fastly.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://fastly.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://fastly.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://fastly.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><div id="outdated"><h6>Your browser is out-of-date!</h6><p>Update your browser to view this website correctly.&amp;npsb;<a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p><p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">×</a></p></div><script src="https://fastly.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script><script>window.addEventListener("load", function () {
+            outdatedBrowser({
+                bgColor: '#f25648',
+                color: '#ffffff',
+                lowerThan: 'object-fit' // display on IE11 or below
+            });
+        });</script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
